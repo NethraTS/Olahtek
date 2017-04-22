@@ -1,0 +1,1 @@
+angular.module('wealthsetter', ['ui.bootstrap', 'ui.router', 'ngCookies','nvd3','angularBootstrapMaterial','ngSanitize', 'ui.select', 'ngAnimate', 'toaster']);

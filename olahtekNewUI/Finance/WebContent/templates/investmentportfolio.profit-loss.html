@@ -1,0 +1,31 @@
+<div class="col-xs-12 ">
+	<form name="profitLossForm" class="form-horizontal">
+		<h3 class="text-center" id="investment">Market is often volatile. If your investments lose 20% of its
+										value in a month, what would you do?</h3>
+		<p class="investment-text"></p>
+		<div class="radio">
+			<abm-form-group>
+			<div class="radio" abm-radio label="Sell all and keep everything
+												in cash to be safe">
+				<input type="radio" name="profiTLoss" class="form-control" abm-form-control required ng-change="changeProfitloss('1')"
+					ng-model="investment.profitloss.value" value="1">
+			</div>
+			<div class="radio" abm-radio label="Sell some to reduce the risk">
+				<input type="radio" name="profiTLoss" class="form-control" abm-form-control required ng-change="changeProfitloss('2')"
+					ng-model="investment.profitloss.value" value="2">
+			</div>
+			<div class="radio" abm-radio label="Do nothing, just stick to
+												the investment plan">
+				<input type="radio" name="profiTLoss" class="form-control" abm-form-control required ng-change="changeProfitloss('5')"
+					ng-model="investment.profitloss.value" value="5">
+			</div>
+			<div class="radio" abm-radio label="buy more to take advantage
+												of the low prices">
+				<input type="radio" name="profiTLoss" class="form-control" abm-form-control required ng-change="changeProfitloss('8')"
+					ng-model="investment.profitloss.value" value="8">
+			</div>
+			</abm-form-group>
+		</div>
+		<button class="btn btn-raised btn-primary pull-right" abm-component  ng-disabled="profitLossForm.$invalid" ng-click="profitLossForm.$valid&&checkProfitLoss()" >Next</button>
+	</form>
+</div>

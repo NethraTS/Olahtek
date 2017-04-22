@@ -1,0 +1,136 @@
+<div class="col-xs-8 col-xs-push-2" >
+    <form name="basicInfoForm" class="form-horizontal" >
+    	<h3 class="text-center" id="investment" >Basic Information</h3>
+    	<div class="row">
+    		<div class="col-xs-6">
+    		 	
+    			<abm-form-group error-messages="errorMap">
+		    	<label  type="floating">Where do you live?</label>
+		      	<ui-select name="state" ng-model="welcome.basic.city"  ng-change="fetchCities(welcome.basic.city)"   title="Select your State" style="padding-top:10px" required>
+		           <ui-select-match name="state">{{$select.selected}}</ui-select-match>
+		           <ui-select-choices repeat="item in states | filter: $select.search">
+		             <div ng-bind-html="item | highlight: $select.search"></div>
+		           </ui-select-choices>
+		        </ui-select>
+		       
+		            <p ng-show="basicInfoForm.state.$error.required">This fiels is mandatatory</p>
+		        </abm-form-group>
+    		</div>
+    		<div class="col-xs-6">
+		        <abm-form-group error-messages="errorMap">
+		    	<label type="floating">Where is your city?</label>
+		        <ui-select name="city" ng-model="welcome.basic.country"   title="Select your City" ng-change="autocompleteForCounty()" style="padding-top:10px" required>
+		           <ui-select-match >{{$select.selected}}</ui-select-match>
+		           <ui-select-choices repeat="item in cities | filter: $select.search">
+		             <div ng-bind-html="item | highlight: $select.search"></div>
+		           </ui-select-choices>
+		        </ui-select>
+		        </abm-form-group>
+    		</div>
+    	</div>
+    	<div class="row">
+    		<div class="col-xs-6">
+    			<abm-form-group error-messages="errorMap">
+			        <label >Your Age</label>
+			        <input type="text" onkeypress="return onlyNumbers(event,this)"  maxlength="2" ng-pattern="/^[0-9]{1,2}$/"  name="age" class="form-control" abm-form-control ng-model="welcome.basic.age" required >
+			    </abm-form-group>
+    		</div>
+    		<div class="col-xs-6">
+    			<abm-form-group error-messages="errorMap">
+			       	  <label class="visible-lg-block visible-md-block visible-sm-block visible-xs-block" >Are you Married? </label>
+					  <div class="radio visible-lg-inline-block visible-md-inline-block visible-sm-inline-block visible-xs-inline-block" abm-radio label="Married" >
+					    <input type="radio" name="martialStatus" ng-change="change()" required ng-model="welcome.basic.married" value="Yes" >
+					  </div>
+					  <div class="radio visible-lg-inline-block visible-md-inline-block visible-sm-inline-block visible-xs-inline-block" abm-radio label="Single" >
+					    <input type="radio" name="martialStatus" ng-model="welcome.basic.married" value="No" required ng-change="change()">
+					  </div>
+			    </abm-form-group> 
+			   <!--  <abm-form-group  error-messages="errorMap">
+		       		<label for="usr">Are you Married?</label>
+		         	<select class="form-control" name="martialStatus" abm-form-control  ng-model="welcome.basic.married" ng-change="change()" >
+		          	 	<option ng-value="Yes">Married</option>
+		          	 	<option ng-value="No">Single</option>
+		         	</select>
+		      	</abm-form-group> -->
+    		</div>
+    	</div>
+      
+      <div class="row">
+      		<div class="col-xs-12">
+      			<abm-form-group ng-hide="!hideStatus" error-messages="errorMap"   >
+		       		<label for="usr">Do you have any dependants?</label>
+		         	<select class="form-control" name="kidscount" abm-form-control  ng-change="funCheck()"  ng-model="welcome.basic.filingStatus" ng-required="welcome.basic.married == 'No'" >
+		          	 	<option ng-selected="filingOptions.id == welcome.basic.filingStatus" ng-repeat="filingOptions in filingOptions" ng-value="filingOptions.id">{{filingOptions.id}}</option>
+		         	</select>
+		      	</abm-form-group>
+      		</div>
+    		<div class="col-xs-6">
+		      <abm-form-group error-messages="errorMap" ng-show="welcome.basic.married == 'Yes'" >
+		        <label >Your SpouseName</label>
+		        <input type="text" name="spouse_name" onkeypress="return onlyAlphabets(event,this)" class="form-control" ng-model="welcome.basic.spouse.name" abm-form-control ng-required="welcome.basic.married == 'Yes'" >
+		      </abm-form-group>
+		    </div>
+		    <div class="col-xs-6">
+		      <abm-form-group error-messages="errorMap"   ng-show="welcome.basic.married == 'Yes'">
+		        <label >Your Spouse Age?</label>
+		        <input type="text" onkeypress="return onlyNumbers(event,this)"  maxlength="2" name="spouse_age" class="form-control" abm-form-control ng-model="welcome.basic.spouse.sage" ng-required="welcome.basic.married == 'Yes'" >
+		      </abm-form-group> 
+		    </div>
+      </div>
+      <div class="row" ng-show="welcome.basic.married=='Yes' || (welcome.basic.married=='No' && welcome.basic.filingStatus=='Yes' ) ">
+      		<div class="col-xs-12">
+      			<abm-form-group  error-messages="errorMap"   >
+		       	<label for="usr">How many dependant children do you have?</label>
+		         <select class="form-control" name="kidscount" abm-form-control  ng-model="welcome.basic.kidscount" ng-change="addkids(welcome.basic.kidscount)" required >
+		          	 <option ng-selected="kid.number==welcome.basic.kidscount" ng-repeat="kid in kidsnumber" ng-value="kid.number">{{kid.number}}</option>
+		         </select>
+		      </abm-form-group>
+      		</div>
+      		<div class="row" ng-repeat="kid in welcome.basic.kids">
+      		
+		        <div class="col-xs-6">
+		         
+		          <abm-form-group error-messages="errorMap">
+		            <label >Child Name</label>
+		            <input class="form-control" onkeypress="return onlyAlphabets(event,this)" 
+				 		type="text"  placeholder="" maxlength="15" minlength="2" name="childname" class="input_bl-long"
+						ng-model="kid.name" ng-required="welcome.basic.kidscount > 0" />
+		          </abm-form-group>
+		        </div>
+		        <div class="col-xs-6">
+		       
+		          <abm-form-group error-messages="errorMap">
+		            <label >Child Age</label>
+		            <select class="form-control" name="childage" abm-form-control ng-model="kid.age" ng-required="welcome.basic.kidscount > 0" >
+		              <option ng-selected="kidsage.id==kid.age"  ng-repeat="kidsage in kidsages" ng-value="kidsage.id">{{kidsage.id}}</option>
+		            </select>
+		          </abm-form-group>
+		        </div>
+		        <div class="col-xs-12" ng-show="kid.age>18">
+		        	<abm-form-group error-messages="errorMap">
+					<label >Is the kid a full time student?</label>
+		            <select class="form-control" ng-model="kid.flag" ng-required="kid.age>18" name="fulltimestudent" >
+						<option ng-selected="student.id==kid.flag" ng-repeat="student in student"
+							ng-value="student.id">{{student.id}}
+						</option>
+					</select>
+					</abm-form-group>
+				</div>
+		    </div>
+      </div>
+      <div class="row" ng-show="welcome.basic.married=='Yes' || (welcome.basic.married=='No' && welcome.basic.filingStatus=='Yes' )  ">
+      	<div class="col-xs-12">
+      		  <abm-form-group error-messages="errorMap"   >
+		       	<label for="usr">How many other dependants do you have?</label>
+		         <select class="form-control" name="kidscount" abm-form-control   ng-model="welcome.basic.dependants" required >
+		          	 <option ng-selected="kid.number==welcome.basic.dependants" ng-repeat="kid in kidsnumber" ng-value="kid.number">{{kid.number}}</option>
+		         </select>
+		      </abm-form-group> 
+      	</div>
+      </div>
+   
+	
+      <button type="submit"  class="btn btn-raised btn-primary pull-right" abm-component  ng-disabled="basicInfoForm.$invalid" ng-click="basicInfo(welcome)" >Next</button>
+      
+    </form>
+  </div>

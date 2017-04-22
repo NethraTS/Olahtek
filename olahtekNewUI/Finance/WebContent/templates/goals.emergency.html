@@ -1,0 +1,133 @@
+
+<style>
+/* .container {
+	width: 1053px;
+} */
+.btn.btn-primary {
+	background-color: #4caf50;
+}
+
+.form-group {
+	margin: 5px 0;
+	padding: 0;
+}
+
+#labelColor {
+	color: #333;
+	text-align: center;
+}
+
+.money-fieldmodel::before {
+	content: "$";
+	position: absolute;
+	font-size: 16px;
+	display: block;
+	padding: 3.2%;
+	padding-top: 12.7%;
+	padding-left: 0%;
+}
+
+#money {
+	 padding-left: 12%;
+    padding-bottom: 0%;
+}
+.row > div {
+    margin-bottom: 2px;
+}
+</style>
+<div ng-init="load();" ng-cloak>
+    <toaster-container
+        toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-center'}"></toaster-container>
+    <script type="text/ng-template" id="myTemplateWithData.html">
+        <p>{{toaster.data}}</p>
+    </script>
+<div class="row">
+	<div class="col-lg-12">
+		<form name="emergency" class="form-horizontal" novalidate>
+			<div class="row">
+				<div class="form-group">
+					<div class="col-sm-10 col-sm-push-3">
+						<div class="row">
+							<div class="col-lg-4">
+								<div class="radio">
+									<label id="labelColor"> <input type="radio" name="etfs"
+										required ng-model="formdata.timePeriod" ng-change="progressBar()" value="Fix Amount">
+										Fix amount
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4">
+								<div class="radio">
+									<label id="labelColor"> <input type="radio" name="expenseval"
+										ng-model="formdata.timePeriod" ng-change="progressBar()" value="Expense" required>
+										Months of expenses
+									</label>
+								</div>
+							</div>
+							<div class="col-lg-2">
+								<select id="sel1" ng-model="formdata.month" class="form-control">
+									<option ng-selected="item==formdata.month"
+										ng-repeat="item in time" 
+										class="ng-binding ng-scope" value="{{item}}">{{item}}</option>
+
+								</select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4">
+								<div class="radio">
+									<label id="labelColor"> <input type="radio" name="incomeval"
+										ng-model="formdata.timePeriod" ng-change="progressBar()" value="Income" required>
+										Months of income
+									</label>
+								</div>
+							</div>
+							<div class="col-lg-2">
+								<select id="sel1" ng-model="formdata.month1"
+									class="form-control">
+									<option ng-selected="item==formdata.month1"
+										ng-repeat="item in time1" 
+										class="ng-binding ng-scope" value="{{item}}">{{item}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-6 col-sm-push-2">
+								<div class="form-group">
+									<label id="labelColor">Amount to be saved</label>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-2 col-sm-push-2">
+								<span class="money-fieldmodel"> <input type="text"
+									ng-required="showLabelUser"
+									onkeypress="return numbersonly(event)" maxlength="15"
+									name="etfs" class="form-control" id="money"
+									ng-model="formdata.amountSave" ng-change="hideMessages()"
+									style="" required="required"> <span
+									ng-show="emergency.etfs.$invalid" class="help-block" style=""><code>This
+											field is mandatory</code></span>
+											</span>
+							</div>
+						</div>
+						<span ng-show="emergency.etfs.$invalid" class="help-block"><code>This
+								field is mandatory</code></span>
+						<div class="row">
+							<div class="col-sm-4 col-xs-push-6">
+								<button class="btn btn-raised btn-success"
+									ng-click="progressBar1()">Done</button>
+							</div>
+						</div>
+					</div>
+	<!-- 				<div class="col-sm-10 col-sm-push-3" ng-hide="showResultPage">
+					
+					</div> -->
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+</div>

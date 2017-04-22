@@ -1,0 +1,27 @@
+<div class="col-xs-12 ">
+	<form name="etfsForm" class="form-horizontal">
+		<h3 class="text-center" id="investment">In our recommended
+			portfolio, we utilize exchange traded funds (ETFs) exclusively
+			because of their market coverage, low cost, and easy to trade. How
+			familiar are you with ETFs? (you can find out more information
+			following this link)</h3>
+		<p class="investment-text"></p>
+		<div class="radio">
+			<abm-form-group>
+			<div class="radio" abm-radio label="Very familiar (I know more than a half dozen popular ETFs)">
+				<input type="radio" name="etfs" ng-change="changeEtfs('6')" class="form-control" abm-form-control required ng-model="investment.etfs.value" value="6">
+			</div>
+			<div class="radio" abm-radio label="Familiar (Though I have not traded, or know many ETFs, I know what they are and know who are the sponsors of some of the most popular ETFs)">
+				<input type="radio" name="etfs" ng-change="changeEtfs('5')" class="form-control" abm-form-control required ng-model="investment.etfs.value" value="5">
+			</div>
+			<div class="radio" abm-radio label="Not very familiar (I know what is an ETF, but that's pretty much the limit of my knowledge)">
+				<input type="radio" name="etfs" ng-change="changeEtfs('4')" class="form-control" abm-form-control required ng-model="investment.etfs.value" value="4">
+			</div>
+			<div class="radio" abm-radio label="Unfamiliar (What is ETF?)">
+				<input type="radio" name="etfs" ng-change="changeEtfs('3')" class="form-control" abm-form-control required ng-model="investment.etfs.value" value="3">
+			</div>
+			</abm-form-group>
+		</div>
+		<button class="btn btn-raised btn-primary pull-right" abm-component ng-disabled="etfsForm.$invalid" ng-click="etfsForm.$valid&&checkEtfs()" >Next</button>
+	</form>
+</div>

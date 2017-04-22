@@ -1,0 +1,472 @@
+<style>
+.main-view {
+	height: auto;
+}
+
+.form-group.label-static label.control-label {
+	color: #BDBDBD;
+}
+
+.content-area {
+	background: #f6f6f6;
+}
+
+.form-group {
+	margin: 5px 0;
+	padding: 0;
+}
+
+#whitebg {
+	background-color: #fff;
+}
+
+#labelColor {
+	color: #333;
+	text-align: left;
+}
+
+#calcColor {
+	color: #2e4dc7;
+	text-align: left;
+	font-weight: 500;
+}
+
+.form-group label.control-label {
+	font-size: 15px;
+}
+
+td {
+	text-align: center;
+}
+
+#leftMargin {
+	margin-left: 5%;
+}
+
+.heading {
+	font-weight: 700;
+	background-color: lightgray;
+}
+
+.marginTop {
+	margin-top: 5%;
+}
+
+.form-horizontal .radio {
+	padding-top: 20px;
+}
+.money-fieldmodel::before{
+	content: "$";
+	position: absolute;
+	font-size: 16px;
+	display: block;
+	padding: 3.2%;
+	 padding-top:2.7%;
+	padding-left: 0%;
+}
+#money {
+	padding-left : 5%;
+}
+</style>
+
+<div ng-init="load();" ng-cloak>
+	<toaster-container
+		toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-center'}"></toaster-container>
+	<script type="text/ng-template" id="myTemplateWithData.html">
+		<p>{{toaster.data}}</p>
+    </script>
+	<div class="container" style="padding-top: 100px">
+		<h3 class="text-center" id="calcColor">Social Security Benefits</h3>
+		<br>
+		<div class="row">
+			<div class="col-xs-6" id="whitebg">
+				<form name="ssbForm" class="form-horizontal" novalidate>
+					<div class="row" ng-show="showIncomeProfileRadio">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Do
+								you want to use a saved income profile?</label>
+							<div class="col-sm-6">
+								<div
+									class="radio visible-lg-inline-block visible-md-inline-block visible-sm-inline-block visible-xs-inline-block">
+									<label id="labelColor"> <input type="radio"
+										name="showprofiles" ng-required="showIncomeProfileRadio"
+										ng-change="RadioChangeIncome('Yes')" 
+										ng-model="formdata.income" value="ShowIncome"> Yes
+									</label>
+								</div>
+								<div
+									class="radio visible-lg-inline-block visible-md-inline-block visible-sm-inline-block visible-xs-inline-block">
+									<label id="labelColor"> <input type="radio"
+										name="showprofiles" ng-required="showIncomeProfileRadio"
+										ng-change="RadioChangeIncome('No')" 
+										ng-model="formdata.income" value="HideIncome"> No		
+									</label>
+								</div>
+								<span ng-show="ssbForm.showprofiles.$invalid" class="help-block"><code>This field is mandatory</code></span>
+								<!-- <select ng-required="showIncomeProfileRadio"
+									class="form-control" name="showprofiles"
+									ng-model="formdata.income"
+									ng-change="RadioChangeIncome(formdata.income)">
+									<option ng-selected="formdata.income == 'Yes'"
+										value="ShowIncome">Yes</option>
+									<option ng-selected="formdata.income == 'No'"
+										value="HideIncome">No</option>
+								</select> -->
+							</div>
+						</div>
+					</div>
+					<div class="row" ng-show="formdata.income == 'ShowIncome'">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Select
+								an Income Profile</label>
+							<div class="col-sm-6">
+								<select name="incomeprof"
+									class="form-control" name="selectincome" ng-required="formdata.income == 'ShowIncome'"
+									ng-model="formdata.income_prof" ng-change="changeIncome()">
+									<option ng-repeat="income in incomeProfile" value={{income}}>{{
+										income }}</option>
+								</select>
+								<span ng-show="ssbForm.incomeprof.$invalid" class="help-block"><code>This field is mandatory</code></span>
+							</div>
+						</div>
+					</div>
+					<div class="row" ng-show="selectedFromIncome">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Birth
+								Year</label>
+							<div class="col-sm-6">
+								<input ng-show="showUserBirth" id="text" class="form-control" name="userbirth"
+									placeholder="YYYY" ng-model="formdata.dob" readonly /> <input
+									type="text"
+									ng-hide="showUserBirth" onkeypress="return numbersonly(event)" name="userbirth"
+									maxlength="4" class="form-control" placeholder="YYYY" ng-required="!showUserBirth"
+									ng-model="formdata.dob" ng-change="userDOBChange()" />
+									<span ng-show="ssbForm.userbirth.$invalid" class="help-block"><code>This field is mandatory</code></span>
+							</div>
+						</div>
+					</div>
+					<div class="row" ng-show="formdata.income == 'HideIncome'">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Do
+								you know your AIME?</label>
+							<div class="col-sm-6">
+								<div
+									class="radio visible-lg-inline-block visible-md-inline-block visible-sm-inline-block visible-xs-inline-block">
+									<label id="labelColor"> <input type="radio"
+										name="knowaime" ng-required="formdata.income == 'HideIncome'"
+										ng-change="RadioChangeUserAIME('Yes')"
+										ng-model="formdata.useraime" value="Yes"> Yes
+									</label>
+								</div>
+								<div
+									class="radio visible-lg-inline-block visible-md-inline-block visible-sm-inline-block visible-xs-inline-block">
+									<label id="labelColor"> <input type="radio"
+										name="knowaime" ng-required="formdata.income == 'HideIncome'"
+										ng-change="RadioChangeUserAIME('No')" 
+										ng-model="formdata.useraime" value="No"> No
+									</label>
+								</div>
+								<span ng-show="ssbForm.knowaime.$invalid" class="help-block"><code>This field is mandatory</code></span>
+								<!-- <select ng-required="formdata.income == 'HideIncome'"
+									class="form-control" name="knowaime"
+									ng-model="formdata.useraime"
+									ng-change="RadioChangeUserAIME(formdata.useraime)">
+									<option ng-selected="formdata.useraime == 'Yes'" value="Yes">Yes</option>
+									<option ng-selected="formdata.useraime == 'No'" value="No">No</option>
+								</select> -->
+							</div>
+						</div>
+					</div>
+					<div class="row" ng-show="showLabelUser">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">{{
+								userLabel }}</label>
+							<div class="col-sm-6">
+								<span class="money-fieldmodel"> <input type="text"
+									ng-required="showLabelUser" 
+									onkeypress="return numbersonly(event)" maxlength="15"
+									name="useraime" class="form-control" id="money"
+									ng-model="formdata.annaul_income" ng-change="hideMessages()" />
+									<span ng-show="ssbForm.useraime.$invalid" class="help-block"><code>This field is mandatory</code></span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="row" ng-show="selectedFromIncome">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Retirement
+								Age</label>
+							<div class="col-sm-6">
+								<select class="form-control" name="retage" required
+									ng-model="formdata.ret_age"  ng-change="hideMessages()">
+									<option ng-selected="defaultUserRetAge == age"
+										ng-repeat="age in retirementAge" value="{{age}}">{{
+										age }}</option>
+								</select>
+								<span ng-show="ssbForm.retage.$invalid" class="help-block"><code>This field is mandatory</code></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row" ng-show="selectedFromIncome">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Marital
+								Status</label>
+							<div class="col-sm-6">
+								<div
+									class="radio visible-lg-inline-block visible-md-inline-block visible-sm-inline-block visible-xs-inline-block">
+									<label id="labelColor"> <input type="radio"
+										name="maritalstatus" required
+										ng-change="RadioChangeMarital('Single')" 
+										ng-model="formdata.martial" value="Single"> Single
+									</label>
+								</div>
+								<div
+									class="radio visible-lg-inline-block visible-md-inline-block visible-sm-inline-block visible-xs-inline-block">
+									<label id="labelColor"> <input type="radio"
+										name="maritalstatus" required
+										ng-change="RadioChangeMarital('Married')" 
+										ng-model="formdata.martial" value="Married"> Married		
+									</label>
+								</div>
+								<span ng-show="ssbForm.maritalstatus.$invalid" class="help-block"><code>This field is mandatory</code></span>
+								<!-- <select class="form-control" name="maritalstatus"
+									ng-model="formdata.martial"
+									ng-change="RadioChangeMarital(formdata.martial)" required>
+									<option ng-selected="formdata.martial == 'Single'"
+										value="Single">Single</option>
+									<option ng-selected="formdata.martial == 'Married'"
+										value="Married">Married</option>
+								</select> -->
+							</div>
+						</div>
+					</div>
+					<div class="row" ng-show="showThis3">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Is
+								Spouse Working?</label>
+							<div class="col-sm-6">
+								<div
+									class="radio visible-lg-inline-block visible-md-inline-block visible-sm-inline-block visible-xs-inline-block">
+									<label id="labelColor"> <input type="radio"
+										name="spouseworking" ng-required="showThis3"
+										ng-change="RadioChange1('Yes')" 
+										ng-model="formdata.spousework" value="Yes"> Yes
+									</label>
+								</div>
+								<div
+									class="radio visible-lg-inline-block visible-md-inline-block visible-sm-inline-block visible-xs-inline-block">
+									<label id="labelColor"> <input type="radio"
+										name="spouseworking" ng-required="showThis3"
+										ng-change="RadioChange1('No')" 
+										ng-model="formdata.spousework" value="No"> No
+									</label>
+								</div>
+								<span ng-show="ssbForm.spouseworking.$invalid" class="help-block"><code>This field is mandatory</code></span>
+								<!-- <select ng-required="showThis3" class="form-control"
+									name="spouseworking" ng-model="formdata.spousework"
+									ng-change="RadioChange1(formdata.spousework)">
+									<option ng-selected="formdata.spousework == 'Yes'" value="Yes">Yes</option>
+									<option ng-selected="formdata.spousework == 'No'" value="No">No</option>
+								</select> -->
+							</div>
+						</div>
+					</div>
+					<div class="row" ng-show="(showThis || showThis4) && selectedFromIncome">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Spouse
+								Birth Year</label>
+							<div class="col-sm-6">
+								<input ng-show="showSpouseBirth" type="text"
+									class="form-control" placeholder="YYYY" name="spousebirth"
+									ng-model="formdata.spousedob" readonly /> <input type="text"
+									ng-required="(showThis || showThis4) && !showSpouseBirth"
+									ng-hide="showSpouseBirth"
+									onkeypress="return numbersonly(event)" maxlength="4"
+									class="form-control" placeholder="YYYY" name="spousebirth"
+									ng-model="formdata.spousedob" ng-change="spouseDOBChange()" />
+									<span ng-show="ssbForm.spousebirth.$invalid" class="help-block"><code>This field is mandatory</code></span>
+							</div>
+						</div>
+					</div>
+					<div class="row" ng-show="showThis">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Do
+								you know your spouse AIME?</label>
+							<div class="col-sm-6">
+								<div
+									class="radio visible-lg-inline-block visible-md-inline-block visible-sm-inline-block visible-xs-inline-block">
+									<label id="labelColor"> <input type="radio"
+										name="knowspouseaime" ng-required="showThis"
+										ng-change="RadioChangeSpouseAIME('Yes')"
+										 ng-model="formdata.spouseaime" value="Yes">
+										Yes
+									</label>
+								</div>
+								<div
+									class="radio visible-lg-inline-block visible-md-inline-block visible-sm-inline-block visible-xs-inline-block">
+									<label id="labelColor"> <input type="radio"
+										name="knowspouseaime" ng-required="showThis"
+										ng-change="RadioChangeSpouseAIME('No')"
+										 ng-model="formdata.spouseaime" value="No"> No
+									</label>
+								</div>
+								<span ng-show="ssbForm.knowspouseaime.$invalid" class="help-block"><code>This field is mandatory</code></span>
+								<!-- <select ng-required="showThis" class="form-control"
+									name="knowspouseaime" ng-model="formdata.spouseaime"
+									ng-change="RadioChangeSpouseAIME(formdata.spouseaime)">
+									<option ng-selected="formdata.spouseaime == 'Yes'" value="Yes">Yes</option>
+									<option ng-selected="formdata.spouseaime == 'No'" value="No">No</option>
+								</select> -->
+							</div>
+						</div>
+					</div>
+					<div class="row" ng-show="showLabelSpouse">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">{{
+								spouseLabel }}</label>
+							<div class="col-sm-6">
+								<span class="money-fieldmodel"> <input
+									 type="text" ng-required="showLabelSpouse" name="spouseincome"
+									onkeypress="return numbersonly(event)" maxlength="15" id="money"
+									class="form-control" ng-model="formdata.spouseannaul_income"
+									ng-change="hideMessages()" />
+									<span ng-show="ssbForm.spouseincome.$invalid" class="help-block"><code>This field is mandatory</code></span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="row" ng-show="(showThis || showThis4) && selectedFromIncome">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Spouse
+								Retirement Age</label>
+							<div class="col-sm-6">
+								<select class="form-control" name="spouseret"
+									ng-model="formdata.spouseret_age" ng-change="hideMessages()">
+									<option ng-selected="defaultSpouseRetAte == age1" ng-required="showThis || showThis2"
+										ng-repeat="age1 in retirementAge" value="{{age1}}">{{
+										age1 }}</option>
+								</select>
+								<span ng-show="ssbForm.spouseret.$invalid" class="help-block"><code>This field is mandatory</code></span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div style="color: red; text-align: center;">{{errormsg}}</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6 col-xs-push-5">
+							<button class="btn btn-raised btn-success" ng-click="resetForm()">Reset</button>
+						</div>
+						<div class="col-sm-6 col-xs-push-2">
+							<button class="btn btn-raised btn-success"
+								ng-click="ssb(formdata)">Calculate</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="col-xs-5" id="leftMargin" ng-show="showChart">
+				<div class="row">
+					<div class="col-lg-12" ng-show="userSSB" id="ssboutput">
+						<b>You will receive &#36;{{userssb}} monthly social security
+							benefits at age {{ formdata.ret_age }}.</b>
+					</div>
+					<div class="col-lg-12" ng-show="spouseSSB2">
+						<b>Your spouse will receive &#36;{{spousessb}} monthly social
+							security benefits at age {{ formdata.spouseret_age }}.</b>
+					</div>
+					<div class="col-lg-12" ng-show="spouseSSB3">
+						<b>Your spouse will receive &#36;{{spousessb}} monthly social
+							security benefits.</b>
+					</div>
+					<div class="col-lg-12" ng-show="spouseSSB4">
+						<b>Since spouse SSB is going negative, Your spouse will
+							receive &#36;{{spousessb}} (half of user SSB) monthly social
+							security benefits {{ formdata.spouseret_age }}</b>
+					</div>
+					<div class="col-lg-12" ng-show="userNegative">
+						<b>User SSB is going negative at ages {{
+							userNegativeShow.toString() }}.</b>
+					</div>
+					<div class="col-lg-12" ng-show="spouseNegative" id="ssboutput">
+						<b>Spouse SSB is going negative at ages {{
+							spouseNegativeShow.toString() }}.</b>
+					</div>
+				</div>
+				<div class="row" id="whitebg">
+					<div class="table-responsive">
+						<table class="table">
+							<tr>
+								<td class="heading">Retirement Age</td>
+								<td class="heading">User SSB</td>
+								<td class="heading"
+									ng-show="formdata.martial == 'Married' && formdata.spousework == 'Yes'">Spouse
+									SSB</td>
+							</tr>
+							<tr>
+								<td>62</td>
+								<td>&#36;{{user62}}</td>
+								<td
+									ng-show="formdata.martial == 'Married' && formdata.spousework == 'Yes'">&#36;{{spouse62}}</td>
+							</tr>
+							<tr>
+								<td>63</td>
+								<td>&#36;{{user63}}</td>
+								<td
+									ng-show="formdata.martial == 'Married' && formdata.spousework == 'Yes'">&#36;{{spouse63}}</td>
+							</tr>
+							<tr>
+								<td>64</td>
+								<td>&#36;{{user64}}</td>
+								<td
+									ng-show="formdata.martial == 'Married' && formdata.spousework == 'Yes'">&#36;{{spouse64}}</td>
+							</tr>
+							<tr>
+								<td>65</td>
+								<td>&#36;{{user65}}</td>
+								<td
+									ng-show="formdata.martial == 'Married' && formdata.spousework == 'Yes'">&#36;{{spouse65}}</td>
+							</tr>
+							<tr>
+								<td>66</td>
+								<td>&#36;{{user66}}</td>
+								<td
+									ng-show="formdata.martial == 'Married' && formdata.spousework == 'Yes'">&#36;{{spouse66}}</td>
+							</tr>
+							<tr>
+								<td>67</td>
+								<td>&#36;{{user67}}</td>
+								<td
+									ng-show="formdata.martial == 'Married' && formdata.spousework == 'Yes'">&#36;{{spouse67}}</td>
+							</tr>
+							<tr>
+								<td>68</td>
+								<td>&#36;{{user68}}</td>
+								<td
+									ng-show="formdata.martial == 'Married' && formdata.spousework == 'Yes'">&#36;{{spouse68}}</td>
+							</tr>
+							<tr>
+								<td>69</td>
+								<td>&#36;{{user69}}</td>
+								<td
+									ng-show="formdata.martial == 'Married' && formdata.spousework == 'Yes'">&#36;{{spouse69}}</td>
+							</tr>
+							<tr>
+								<td>70</td>
+								<td>&#36;{{user70}}</td>
+								<td
+									ng-show="formdata.martial == 'Married' && formdata.spousework == 'Yes'">&#36;{{spouse70}}</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row" ng-show="showChart" id="whitebg">
+			<div class="col-lg-12" id="col1">
+				<nvd3 options="optionsSSB" data="dataSSB"></nvd3>
+			</div>
+		</div>
+		<div class="marginTop"></div>
+	</div>
+</div>

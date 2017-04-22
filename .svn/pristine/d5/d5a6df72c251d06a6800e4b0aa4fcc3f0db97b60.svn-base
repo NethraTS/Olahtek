@@ -1,0 +1,241 @@
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+	background-color : #4caf50;
+}
+
+.nvd3-svg {
+	padding-left: 45px;
+}
+
+.dollar-field2::before {
+	content: "$";
+	position: absolute;
+	font-size: 15px;
+	display: block;
+	right: 8%;
+	bottom: 41%;
+	/* padding: 3.4%; */
+}
+
+.dollar-field3::before {
+	content: "$";
+	position: absolute;
+	font-size: 15px;
+	display: block;
+	right: 5%;
+	bottom: 17%;
+	/* padding: 3.4%; */
+}
+
+.dollar-field::before {
+	content: "$";
+	position: absolute;
+	font-size: 15px;
+	display: block;
+	right: 11%;
+	bottom: 62%;
+	/* padding: 3.4%; */
+}
+
+.dollar-field1::before {
+	content: "$";
+	position: absolute;
+	font-size: 15px;
+	display: block;
+	right: 6%;
+	bottom: 27%;
+	/* padding: 3.4%; */
+}
+
+rect {
+	fill: #fff;
+}
+
+.axis {
+	font-family: inherit;
+	font-size: 10px;
+}
+
+.legend {
+	text-align: center;
+	font-size: 10px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+circle, .line {
+	fill: none;
+	stroke: #328de4; /* blue for userIncome*/
+	stroke-width: 4px;
+}
+
+circle {
+	fill: white;
+	fill-opacity: 1;
+	stroke-width: 1px;
+	cursor: move;
+}
+
+circle1, .line1 {
+	fill: none;
+	stroke: #e43234; /* red for expense */
+	stroke-width: 4px;
+}
+
+circle1 {
+	stroke: #e43234;
+	stroke-width: 1px;
+	fill: white;
+	fill-opacity: 1;
+	cursor: move;
+}
+
+.lineTax {
+	fill: none;
+	stroke: #FFFF99; /* yellow for tax */
+	stroke-width: 4px;
+}
+
+.lineExp {
+	fill: none;
+	stroke: #ff7f0e; /* Orange for tax */
+	stroke-width: 4px;
+}
+
+circle2, .line2 {
+	fill: none;
+	stroke: #32e2e2; /* steel blue for spouseIncome */
+	stroke-width: 4px;
+}
+
+circle2 {
+	stroke: #32e2e2;
+	stroke-width: 1px;
+	fill: white;
+	fill-opacity: 1;
+	cursor: move;
+}
+
+circle3, .line3 {
+	fill: none;
+	stroke: #b0c10c; /* green for combinedIncome */
+	stroke-width: 4px;
+}
+
+circle3 {
+	stroke: #b0c10c;
+	stroke-width: 1px;
+	fill: white;
+	fill-opacity: 1;
+	cursor: move;
+}
+
+div.tooltip {
+	position: absolute;
+	text-align: center;
+	width: auto;
+	height: auto;
+	padding: 2px;
+	font: 12px sans-serif;
+	background: white;
+	border: 1px solid black;
+	color: black;
+	/*  border-radius: 8px; */
+	pointer-events: none;
+}
+
+nvd3.vertical-line {
+	width: 1px !important;
+	background-color: black !important;
+	height: 100% !important;
+	float: left !important;
+}
+
+.dropdown-submenu{position:relative;}
+.dropdown-submenu>.dropdown-menu{width:100%;top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
+.dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#cccccc;margin-top:5px;margin-right:-10px;}
+.dropdown-submenu:hover>a:after{border-left-color:#555;}
+.dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
+
+@media (min-width: 768px) {
+  ul.nav li:hover > ul.dropdown-menu {
+    display: block;
+  }
+  #navbar {
+    text-align: center;
+  }
+}
+
+#investment {
+	color : #0d3cbf;
+}
+
+.investment-text {
+	/* font-size : 21px !important; */ 
+	font-size : 18px;
+	margin-top : 10%;
+	text-align : center;
+	line-height: 115%;
+}
+
+.form-horizontal label {
+	text-align: left;
+}
+
+#investmentSubmit {
+	float : right;
+}
+
+.nav-pills {
+	/* background-color: #ffffff; */
+	margin-left : -4%;
+}
+
+/* #customtab {
+	color: blue !important;
+    cursor: pointer;	
+} */
+
+.item-container {
+  width: 560px;
+}
+
+.item-container .item {
+  /*display: inline-block;*/
+  background-color: #00BB87;
+  padding: 25px;
+  margin: 10px 0;
+  border-radius: 8px;
+  color: white;
+}
+
+.item-container.list .item {
+  float: left;
+  display: inline-block;
+  margin: 10px;
+  padding: 65px;
+}
+
+.item:hover {
+  cursor: pointer;
+  background-color: rgba(0, 187, 135, 0.9);
+}
+
+.expense-text {
+	font-size : 16px;
+}
+
+
+.navbar .dropdown-menu li > a, .navbar.navbar-default .dropdown-menu li > a {
+	padding-top : 1px;
+	padding-bottom: 1px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+.dropdown-menu li {
+	overflow: visible;
+}
+
+#aligncenter {
+	text-align : center;
+}

@@ -1,0 +1,73 @@
+<style>
+.content-area {
+	padding-top: 60px;
+	background: #f6f6f6;
+}
+
+.navbar, .navbar.navbar-default {
+	background: inherit !important;
+}
+.container {
+    width: 1099px;
+}
+ul.sidebar .sidebar-main {
+	height: 45px;
+}
+
+.slide-toggle {
+	overflow: hidden;
+	background: #181818;
+	color: #FFF;
+	position: relative;
+	width: 100%;
+	height: 250px;
+	padding: 0px;
+	transition: top 1000ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+#whitebg {
+	background-color: #fff;
+	    min-height: 380px;
+}
+</style>
+<div id="page-wrapper" ng-class="{'open': toggle}" ng-init="load();"
+    ng-cloak>
+    <toaster-container
+        toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-center'}"></toaster-container>
+    <script type="text/ng-template" id="myTemplateWithData.html">
+        <p>{{toaster.data}}</p>
+    </script>
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar">
+            <li class="sidebar-main">
+                <h3>Select a Goal</h3>
+            </li>
+            <li class="sidebar-list"><a ui-sref="goals.emergency"><!-- <img
+                    src="img/emergencyfund.png"></img> --> Emergency Fund </a></li>
+            <li class="sidebar-list"><a><!-- <!-- <img
+                    src="img/gettingmarried.png"></img> -->Getting Married</a></li>
+            <li class="sidebar-list"><a>Buying Car</a></li>
+            <li class="sidebar-list"><a> <i class="fa fa-home" aria-hidden="true"></i>Buying
+                    A house</a></li>
+            <li class="sidebar-list"><a><!-- <img
+                    src="img/raisingyourkid.png"></img> -->Rasing A Kid</a></li>
+            <li class="sidebar-list"><a>College Education</a></li>
+            <li class="sidebar-list"><a>Vacation</a></li>
+            <li class="sidebar-list"><a>Customized</a></li>
+            <li class="sidebar-list"><a><!-- <img src="img/retirement.png"></img> -->Retirement</a></li></ul>
+    </div>
+<div class="container" style="padding-top: 100px">  
+    <div class="col-lg-10 col-lg-push-1" id="whitebg">
+        <div ui-view>
+        
+            </div>
+    </div>
+    </div>
+    <!-- End Sidebar -->
+
+</div>
+
+<!-- End Page Wrapper -->

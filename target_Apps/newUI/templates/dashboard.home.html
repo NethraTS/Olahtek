@@ -1,0 +1,450 @@
+<style>
+#calcColor {
+    color: #2e4dc7;
+    text-align: left;
+    font-weight: 500;
+}
+</style>
+<!-- <div class="row alerts-container" data-ng-controller="HomeCtrl" data-ng-show="alerts.length">
+  <div class="col-xs-12">
+    <uib-alert data-ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+  </div>
+</div> -->
+<!-- <div class="row">
+	<div class="col-lg-3 col-md-6 col-xs-12">
+		<rd-widget> <rd-widget-body> <img
+			src="img/buyingahouse.png"></img>
+		<div class="item title">Buying A House</div>
+		</rd-widget-body> </rd-widget>
+	</div>
+	<div class="col-lg-3 col-md-6 col-xs-12">
+		<rd-widget> <rd-widget-body> <img
+			src="img/emergencyfund.png"></img>
+		<div class="item title">Emergency Fund</div>
+		</rd-widget-body> </rd-widget>
+	</div>
+	<div class="col-lg-3 col-md-6 col-xs-12">
+		<rd-widget> <rd-widget-body> <img
+			src="img/retirement.png"></img>
+		<div class="item title">Retirement</div>
+		</rd-widget-body> </rd-widget>
+	</div>
+	<div class="col-lg-3 col-md-6 col-xs-12">
+		<rd-widget> <rd-widget-body> <img
+			src="img/gettingmarried.png"></img>
+		<div class="item title">Getting Married</div>
+		</rd-widget-body> </rd-widget>
+	</div>
+	<div class="col-lg-3 col-md-6 col-xs-12">
+		<rd-widget> <rd-widget-body> <img
+			src="img/raisingyourkid.png"></img>
+		<div class="item title">Raising a Kid</div>
+		</rd-widget-body> </rd-widget>
+	</div>
+
+</div>-->
+<script type="text/ng-template" id="updateExpense.html">
+	<div class="modal-header">
+        <i class="fa fa-times close-modal" aria-hidden="true" ng-click="cancel()"></i>
+    </div>
+	<div class="modal-body">
+		<div class="row" id="aligncenter">
+			<div class="col-xs-12">
+				<form name="modifyExpenseForm" class="form-horizontal">
+					<h3 id="investment">Modify Expense Details</h3>
+					<abm-form-group error-messages="errorMap">
+						<label for="usr">For every $1 change in income, do you want to change the housing expense</label>
+						<select class="form-control" name="housing" abm-form-control  ng-model="checkboxData.housingExpense" required>
+							<option ng-repeat="val in expenseValues" ng-selected="housingExpense == val" ng-value="{{val}}">{{val}}</option>
+						</select>
+					</abm-form-group>
+					<abm-form-group error-messages="errorMap">
+						<label for="usr">For every $1 change in income, do you want to change the non-housing expense</label>
+						<select class="form-control" name="nonhousing" abm-form-control  ng-model="checkboxData.nonHousingExpense" required>
+					 	   <option ng-repeat="val in expenseValues" ng-selected="nonHousingExpense == val" ng-value="{{val}}">{{val}}</option>
+						</select>
+					</abm-form-group>
+					<button class="btn btn-raised btn-warning" abm-component ng-click="cancel()">Cancel</button>
+					<button class="btn btn-raised btn-success" abm-component ng-disabled="modifyExpenseForm.$invalid" ng-click="modifyExpenseForm.$valid&&proceedUpdateExpenses()">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/ng-template" id="editExpense.html">
+	<div class="modal-header">
+        <i class="fa fa-times close-modal" aria-hidden="true" ng-click="cancel()"></i>
+    </div>
+	<div class="modal-body">
+		<div class="row" id="aligncenter">
+			<div class="col-xs-12">
+				<form name="saveExpenseForm" class="form-horizontal">
+					<h3 id="investment">Modify Expense Details</h3>
+					<h3 class="expense-text">Do you want to adjust your expenses according to the new income profile?</h3>
+					<div class="radio">	
+						<abm-form-group error-messages="errorMap">
+							<div class="radio" abm-radio label="Yes">
+								<input type="radio" name="editExpense" class="form-control"
+								abm-form-control required ng-change="showEditExpense('yes')"
+								ng-model="checkboxData.editExp" value="yes">
+							</div>
+							<div class="radio" abm-radio label="No">
+								<input type="radio" name="editExpense" class="form-control"
+								abm-form-control required ng-change="showEditExpense('no')"
+								ng-model="checkboxData.editExp" value="no">
+							</div>
+						</abm-form-group>
+					</div>
+					<div ng-show="showEditValues">
+						<abm-form-group error-messages="errorMap">
+							<label for="usr">For every $1 change in income, do you want to change the housing expense</label>
+         					<select class="form-control" name="housing" abm-form-control  ng-model="checkboxData.housingExpense" ng-required="showEditValues" >
+          	 					<option ng-repeat="val in expenseValues" ng-selected="housingExpense == val" ng-value="{{val}}">{{val}}</option>
+         					</select>
+         				</abm-form-group>
+         				<abm-form-group error-messages="errorMap">
+         					<label for="usr">For every $1 change in income, do you want to change the non-housing expense</label>
+         					<select class="form-control" name="nonhousing" abm-form-control  ng-model="checkboxData.nonHousingExpense" ng-required="showEditValues" >
+          	 					<option ng-repeat="val in expenseValues" ng-selected="nonHousingExpense == val" ng-value="{{val}}">{{val}}</option>
+         					</select>
+         				</abm-form-group>
+					</div>
+					<button class="btn btn-raised btn-warning" abm-component ng-click="cancel()">Cancel</button>
+					<button class="btn btn-raised btn-success" abm-component ng-disabled="saveExpenseForm.$invalid" ng-click="saveExpenseForm.$valid&&proceedEditExpenses()">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/ng-template" id="saveIncome.html">
+	<div class="modal-header">
+        <i class="fa fa-times close-modal" aria-hidden="true" ng-click="cancel()"></i>
+    </div>
+	<div class="modal-body">
+		<div class="row" id="aligncenter">
+			<div class="col-xs-12">
+				<form name="saveIncomeForm" class="form-horizontal">
+					<h3 id="investment">Modify Income Details</h3>
+					<div class="radio">	
+						<abm-form-group error-messages="errorMap">
+							<div class="radio" abm-radio label="Change the existing income">
+								<input type="radio" name="saveIncome" class="form-control"
+								abm-form-control required ng-change="selectYear()"
+								ng-model="checkboxData.applyYear.value" value="true">
+							</div>
+							<div class="radio" abm-radio label="Create a new income profile">
+								<input type="radio" name="saveIncome" class="form-control"
+								abm-form-control required ng-change="selectYear()"
+								ng-model="checkboxData.applyYear.value" value="false">
+							</div>
+						</abm-form-group>
+					</div>
+					<div ng-hide="!incomeProfileName">
+						<abm-form-group error-messages="errorMap">
+							<label>Please enter the name of the new income profile</label>
+		       				<input type="text" name="newIncome" class="form-control" ng-model="checkboxData.profileName" abm-form-control ng-required="incomeProfileName">
+						</abm-form-group>
+					</div>
+					<div ng-hide="!plansExist">
+						<abm-form-group error-messages="errorMap">
+							<div class="checkbox" abm-checkbox label="Apply for current financial plan">
+	      						<input type="checkbox" ng-model="checkboxData.applyPlan" value="true">
+	    					</div>
+	    				</abm-form-group>
+					</div>			
+					<button class="btn btn-raised btn-warning" abm-component ng-click="cancel()">Cancel</button>
+					<button class="btn btn-raised btn-success" abm-component ng-disabled="saveIncomeForm.$invalid" ng-click="saveIncomeForm.$valid&&save()">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</script>
+
+<div class="row">
+	<div class="col-lg-12">
+		<p>We extend your income and expense to when you are seventy year
+			old, you can drag the graph to change the future incomes and expenses
+			as you like.</p>
+			<!-- <div > -->
+                        <ul  style="list-style-type:square" >
+                            <li>Click on the graph to introduce the data point on the
+                                line graph.</li>
+                            <li>Click and drag the bubble on the line graph to change
+                                the income value.</li>
+                            <li>Shift + Click on on the bubble to remove the data point.</li>
+                            <li>Please note that the "Current Year", "Retirement Year"
+                                and "Life Expectency Year" bubbles can not be removed from the
+                                graph.</li>
+                        </ul>
+                   <!--  </div> -->
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="widget">
+			<!-- <div class="widget-header">
+				<div class="row">
+					<div class="pull-left">
+						<i class="fa" ng-class="icon"></i> Income Expense Chart
+					</div>
+					<div class="pull-right col-xs-6 col-sm-4"></div>
+				</div>
+			</div> -->
+			<div class="widget-body" ng-class="classes">
+			<h3 class="text-left" id="calcColor" style="padding-left:0%">Income Expense Chart</h3>
+				<div ng-show="loading" class="loading">
+					<div class="double-bounce1"></div>
+					<div class="double-bounce2"></div>
+				</div>
+				<div ng-hide="loading" class="widget-content">
+					<div id="d3-chart-container1" style="width: auto; height: auto"></div>
+					<br>
+					<!-- <div style="margin-top: 2%; text-align: left;">
+						<p style="font-size: 12px;">Graph Usage</p>
+						<ul style="font-size: 11px;">
+							<li>Click on the graph to introduce the data point on the
+								line graph.</li>
+							<li>Click and drag the bubble on the line graph to change
+								the income value.</li>
+							<li>Shift + Click on on the bubble to remove the data point.</li>
+							<li>Please note that the "Current Year", "Retirement Year"
+								and "Life Expectency Year" bubbles can not be removed from the
+								graph.</li>
+						</ul>
+					</div> -->
+					<div style="margin-top: 2%; text-align: center">
+						<input type="submit" abm-component ng-click="restore()"
+							value="Reset" class="btn btn-success btn-raised btn-md">
+						<input type="submit" abm-component
+							ng-click="openUpdateModal('md')" value="Edit Expenses"
+							class="btn btn-success btn-raised btn-md"> <input
+							type="submit" abm-component ng-click="saveShowPopUp()" value="Save"
+							class="btn btn-success btn-raised btn-md">
+					</div>
+				</div>
+				<!-- <div class="col-lg-5 col-lg-push-4" ng-show="isShowExpenseToggle" id="expenseUpdateContainer"> 
+					<form name="modifyExpenseForm" class="form-horizontal">
+						<h3 id="investment">Modify Expense Details</h3>
+						<abm-form-group error-messages="errorMap">
+							<label for="usr">For every $1 change in income, do you want to change the housing expense</label>
+					         <select class="form-control" name="housing" abm-form-control  ng-model="checkboxData.housingExpense" required>
+					          	 <option ng-repeat="val in expenseValues" ng-selected="housingExpense == val" ng-value="{{val}}">{{val}}</option>
+					         </select>
+					         </abm-form-group>
+					         <abm-form-group error-messages="errorMap">
+					         <label for="usr">For every $1 change in income, do you want to change the non-housing expense</label>
+					         <select class="form-control" name="nonhousing" abm-form-control  ng-model="checkboxData.nonHousingExpense" required>
+					          	 <option ng-repeat="val in expenseValues" ng-selected="nonHousingExpense == val" ng-value="{{val}}">{{val}}</option>
+					         </select>
+					    </abm-form-group>
+					    <button class="btn btn-raised btn-warning" abm-component ng-click="toggle1()">Cancel</button>
+						<button class="btn btn-raised btn-success" abm-component ng-click="modifyExpenseForm.$valid&&proceedUpdateExpenses()">Submit</button>
+					</form>
+				</div>
+				<div class="col-lg-5 col-lg-push-4" ng-show="isShow" id="saveContainer"> 
+					<div ng-show="isShowExpense">
+						<form name="saveIncomeForm" class="form-horizontal">
+							<h3 id="investment">Modify Expense Details</h3>
+							<h3 class="expense-text">Do you want to adjust your expenses according to the new income profile?</h3>
+							
+								<div class="radio">	
+									<abm-form-group error-messages="errorMap">
+									<div class="radio" abm-radio
+										label="Yes">
+										<input type="radio" name="editExpense" class="form-control"
+											abm-form-control ng-required="isShowExpense == 'true' && isShow == 'true'" ng-change="showEditExpense('yes')"
+											ng-model="checkboxData.editExp" value="yes">
+									</div>
+									<div class="radio" abm-radio
+										label="No">
+										<input type="radio" name="editExpense" class="form-control"
+											abm-form-control ng-required="isShowExpense == 'true' && isShow == 'true'" ng-change="showEditExpense('no')"
+											ng-model="checkboxData.editExp" value="no">
+									</div>
+									</abm-form-group>
+								</div>
+								<div ng-show="showEditValues">
+									<abm-form-group error-messages="errorMap">
+									<label for="usr">For every $1 change in income, do you want to change the housing expense</label>
+							         <select class="form-control" name="housing" abm-form-control  ng-model="checkboxData.housingExpense" ng-required="showEditValues" >
+							          	 <option ng-repeat="val in expenseValues" ng-selected="housingExpense == val" ng-value="{{val}}">{{val}}</option>
+							         </select>
+							         </abm-form-group>
+							         <abm-form-group error-messages="errorMap">
+							         <label for="usr">For every $1 change in income, do you want to change the non-housing expense</label>
+							         <select class="form-control" name="nonhousing" abm-form-control  ng-model="checkboxData.nonHousingExpense" ng-required="showEditValues" >
+							          	 <option ng-repeat="val in expenseValues" ng-selected="nonHousingExpense == val" ng-value="{{val}}">{{val}}</option>
+							         </select>
+							         </abm-form-group>
+								</div>
+								<button class="btn btn-raised btn-warning" abm-component ng-click="toggleSave()">Cancel</button>
+								<button class="btn btn-raised btn-success" abm-component ng-click="saveIncomeForm.$valid&&proceedEditExpenses()">Submit</button>
+						</form>
+					</div>
+						
+					<div ng-show="!isShowExpense">
+						<form name="saveExpenseForm" class="form-horizontal">
+							<h3 id="investment">Modify Income Details</h3>
+							<div class="radio">	
+								<abm-form-group error-messages="errorMap">
+								<div class="radio" abm-radio
+									label="Change the existing income">
+									<input type="radio" name="saveIncome" class="form-control"
+										abm-form-control required ng-change="selectYear()"
+										ng-model="checkboxData.applyYear.value" value="true">
+								</div>
+								<div class="radio" abm-radio
+									label="Create a new income
+									profile">
+									<input type="radio" name="saveIncome" class="form-control"
+										abm-form-control required ng-change="selectYear()"
+										ng-model="checkboxData.applyYear.value" value="false">
+								</div>
+								</abm-form-group>
+							</div>
+							
+							
+							<div ng-hide="!incomeProfileName">
+								<abm-form-group error-messages="errorMap">
+								<label>Please enter the name of the new income profile</label>
+		       					<input type="text" name="newIncome" class="form-control" ng-model="checkboxData.profileName" abm-form-control ng-required="incomeProfileName">
+								</abm-form-group>
+							</div>
+							
+							
+							<div ng-hide="!plansExist">
+								<abm-form-group error-messages="errorMap">
+								<div class="checkbox" abm-checkbox label="Apply for current financial plan">
+	      							<input type="checkbox" ng-model="checkboxData.applyPlan" value="true">
+	    						</div>
+	    						</abm-form-group>
+							</div>			
+							<button class="btn btn-raised btn-warning" abm-component ng-click="toggleSave()">Cancel</button>
+							<button class="btn btn-raised btn-success" abm-component ng-click="saveExpenseForm.$valid&&save()">Submit</button>
+						</form>
+					</div>					
+				</div> -->
+			</div>
+			
+		</div>
+	</div>
+	<div class="col-lg-12">
+		 <div class="widget">
+			<!-- <div class="widget-header">
+				<div class="row">
+					<div class="pull-left">
+						<i class="fa" ng-class="icon"></i> Area Chart for Assets
+					</div>
+					<div class="pull-right col-xs-6 col-sm-4"></div>
+				</div>
+			</div> -->
+			<div class="widget-body" ng-class="classes">
+			<h3 class="text-left"  id="calcColor" style="padding-left:0%">Area Chart for Assets</h3>
+				<div ng-show="loading" class="loading">
+					<div class="double-bounce1"></div>
+					<div class="double-bounce2"></div>
+				</div>
+				<div ng-hide="loading" class="widget-content">
+					<nvd3 options="options" data="dataBRAsset"></nvd3>
+				</div>
+			</div>
+		</div>
+		<!-- <div ng-hide="loading" class="widget-content">
+                    <nvd3 options="options" data="dataBRAsset"></nvd3>
+                </div> -->
+	</div>
+	<div class="col-lg-12">
+		<div class="widget">
+			<!-- <div class="widget-header">
+				<div class="row">
+					<div class="pull-left">
+						<i class="fa" ng-class="icon"></i> Assets Chart
+					</div>
+					<div class="pull-right col-xs-6 col-sm-4"></div>
+				</div>
+			</div> -->
+			<div class="widget-body" ng-class="classes">
+			<h3 class="text-left"  id="calcColor"  style="padding-left:0%">Assets Chart</h3>
+				<div ng-show="loading" class="loading">
+					<div class="double-bounce1"></div>
+					<div class="double-bounce2"></div>
+				</div>
+				<div ng-hide="loading" class="widget-content">
+				 <span style="position: relative; top: 8px;" class="pull-left">Select
+                        Year </span>
+					<select style="width: 20%; position: relative;display : inline; left: 1%;"
+						data-toogle="tooltip"
+						title="Please select an age to view the income projection"
+						ng-model="startYearBR" class="form-control pull-left"
+						ng-change="changeYearBR(startYearBR)">
+						<option ng-selected="year == startYearBR"
+							ng-repeat="year in yearBR" ng-value="year">{{year}}</option>
+					</select>
+					 <nvd3 options="optionsPie" data="dataPieChartBR"></nvd3>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-12">
+		<div class="widget">
+			<!-- <div class="widget-header">
+				<div class="row">
+					<div class="pull-left">
+						<i class="fa" ng-class="icon"></i> Area Chart for Taxes
+					</div>
+					<div class="pull-right col-xs-6 col-sm-4"></div>
+				</div>
+			</div> -->
+			<div class="widget-body" ng-class="classes">
+			<h3 class="text-left"  id="calcColor" style="padding-left:0%"> Area Chart for Taxes</h3>
+				<div ng-show="loading" class="loading">
+					<div class="double-bounce1"></div>
+					<div class="double-bounce2"></div>
+				</div>
+				<div ng-hide="loading" class="widget-content">
+					<nvd3 options="options" data="dataTax"></nvd3>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<table id="pdfContent" ng-show="false">
+	<thead>
+		<tr>
+			<th>UAge</th>
+			<th>Year</th>
+			<th>Income</th>
+			<th ng-hide="!maritalFlag_imp">SIncome</th>
+			<th>Expense</th>
+			<th>FDI</th>
+			<th>UserFicaSST</th>
+			<th ng-hide="!maritalFlag_imp">SpouseFicaSST</th>
+			<th>FicaMedicare</th>
+			<th>StateTax</th>
+			<th>Saving</th>
+			<th>Taxable</th>
+			<th>NonTaxable</th>
+
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="value1 in tableIncome_imp"> 
+			<td>{{Math.round(value1.id)}}</td>
+			<td>{{Math.round(value1.year)}}</td>
+			<td>{{Math.round(value1.value)}}</td>
+			<td ng-hide="!maritalFlag_imp">{{Math.ceil(value1.spouseValue)}}</td>
+			<td>{{Math.ceil(value1.expense)}}</td>
+			<td>{{Math.round(value1.federalTax)}}</td>
+			<td>{{Math.round(value1.userfICASocialSecurityTax)}}</td>
+			<td ng-hide="!maritalFlag_imp">{{Math.round(value1.spousefICASocialSecurityTax)}}</td>
+			<td>{{Math.round(value1.fICAMedicareTax)}}</td>
+			<td>{{Math.round(value1.stateTax)}}</td>
+			<td>{{Math.round(value1.savings)}}</td>
+			<td>{{Math.round(value1.taxable_investment_amount)}}</td>
+			<td>{{Math.round(value1.nontaxable_investment_amount)}}</td>
+		</tr>
+	</tbody>
+</table>

@@ -1,0 +1,27 @@
+<div class="col-xs-12 ">
+	<form name="userInterestForm" class="form-horizontal">
+		<h3 class="text-center" id="investment">In reviewing my
+			portfolio, I would</h3>
+		<p class="investment-text"></p>
+		<div class="radio">
+			<abm-form-group >
+			<div class="radio" abm-radio
+				label="Focus on investments that have lost money">
+				<input type="radio" name="userInterest" class="form-control" abm-form-control required ng-change="changeUserInterest('2')"
+					ng-model="investment.userinterest.value" value="2">
+			</div>
+			<div class="radio" abm-radio
+				label="Equally focus on investment that have lost or gained money">
+				<input type="radio" name="userInterest" class="form-control" abm-form-control required ng-change="changeUserInterest('6')"
+					ng-model="investment.userinterest.value" value="6">
+			</div>
+			<div class="radio" abm-radio
+				label="Focus on investments that have gained money">
+				<input type="radio" name="userInterest" class="form-control" abm-form-control required ng-change="changeUserInterest('4')"
+					ng-model="investment.userinterest.value" value="4">
+			</div>
+			</abm-form-group>
+		</div>
+		<button class="btn btn-raised btn-primary pull-right" abm-component ng-disabled="userInterestForm.$invalid" ng-click="userInterestForm.$valid&&checkUserInterest()" >Next</button>
+	</form>
+</div>

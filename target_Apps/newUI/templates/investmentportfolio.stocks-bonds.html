@@ -1,0 +1,24 @@
+<div class="col-xs-12 ">
+	<form name="stocksBondsForm" class="form-horizontal">
+		<h3 class="text-center" id="investment">Do you feel comfortable
+			reviewing the performance of a portfolio of stocks and bonds?</h3>
+		<p class="investment-text"></p>
+		<div class="radio">
+			<abm-form-group >
+			<div class="radio" abm-radio label="Very comfortable">
+				<input type="radio" name="stocksBonds" class="form-control" abm-form-control required ng-change="changeStocksBonds('6')"
+					ng-model="investment.stocksbonds.value" value="6">
+			</div>
+			<div class="radio" abm-radio label="Somewhat comfortable">
+				<input type="radio" name="stocksBonds" class="form-control" abm-form-control required ng-change="changeStocksBonds('5')"
+					ng-model="investment.stocksbonds.value" value="5">
+			</div>
+			<div class="radio" abm-radio label="Not comfortable at all">
+				<input type="radio" name="stocksBonds" class="form-control" abm-form-control required ng-change="changeStocksBonds('4')"
+					ng-model="investment.stocksbonds.value" value="4">
+			</div>
+			</abm-form-group>
+		</div>
+		<button class="btn btn-raised btn-primary pull-right" abm-component ng-disabled="stocksBondsForm.$invalid" ng-click="stocksBondsForm.$valid&&checkStocksBonds()" >Next</button>
+	</form>
+</div>

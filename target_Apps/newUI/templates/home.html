@@ -1,0 +1,214 @@
+
+<header ng-init="load()" >
+    <div class="overlay"></div>
+    <div class="header-content">
+        <div class="header-content-inner">
+            <h1 id="homeHeading">We can help you set your financial goals in a better way!!</h1>
+            <a href="#" class="btn btn-raised btn-success btn-xl  " abm-component ng-click="open('lg')">Start Here</a>
+            <!-- <button type="button" class="btn btn-default" ng-click="open('lg')">Large modal</button>
+             <a href="" class="btn btn-raised active" abm-component><code>.active</code></a> -->
+        </div>
+    </div>
+</header>
+<script type="text/ng-template" id="myModalContent.html">
+	
+    <div class="modal-header">
+        <i class="fa fa-times close-modal" aria-hidden="true" ng-click="cancel()"></i>
+    </div>
+    <div class="modal-body">
+        <div class="col-xs-12 col-sm-6 ">
+            <h2 class="subtitle">Welcome to WealthSetter!!</h2>
+            <p>We are going to ask you a few questions in the following page inorder to collect the most basic information about yourself to create a tailored financial plan for you.Remember, you can always use menu bar on left to review and refine your data. First, Please Create an account.</p>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+			<ul class="nav nav-pills">
+    			<li class="active"><a id="customtab" href="#signup-tab" data-toggle="tab">Register </a></li>
+    			<li><a href="#signin-tab" id="customtab" data-toggle="tab">{{tabName}} </a> </li>
+			</ul>
+			<form id="signup" method="post" class="form-horizontal">
+    			<div class="tab-content">
+        			<div class="tab-pane active" id="signup-tab">
+            			<span style="color:red" > {{ errorNameregister }}</span>
+			  			<input type=hidden ng-model="formData.form" value="form1" ng-init="formData.form='Userform'" >
+              			<abm-form-group >
+                			<label data-abm-label type="floating">First Name</label>
+                			<input type="text" class="form-control" abm-form-control name="username"  onkeypress="return onlyAlphabetsUsername(event,this)"  ng-model="formData.username">
+              			</abm-form-group>
+              			<abm-form-group >
+               	 			<label data-abm-label type="floating">Last Name</label>
+                			<input type="text" class="form-control" abm-form-control name="username"  onkeypress="return onlyAlphabetsUsername(event,this)" ng-model="formData.userLname" >
+              			</abm-form-group>
+              			<abm-form-group >
+                			<label data-abm-label  type="floating">Email</label>
+                			<input type="email" class="form-control" abm-form-control name="email"  ng-model="formData.email">
+              			</abm-form-group>
+              			<abm-form-group >
+                			<label data-abm-label  type="floating">Password</label>
+                			<input type="password" class="form-control" abm-form-control data-toggle="tooltip" title="Password should have atleast 8 characters consists of lower case, upper case and number, e.g. Example123"  class="form-control" name="password"  ng-model="formData.password" >
+              			</abm-form-group>
+              			<abm-form-group >
+                			<label data-abm-label  type="floating">Confirm Password</label>
+                			<input type="password" class="form-control" abm-form-control data-toggle="tooltip" title="Password should have atleast 8 characters consists of lower case, upper case and number, e.g. Example123"  class="form-control"  name="confirm_password" ng-model="formData.confirmpassword" >
+              			</abm-form-group>
+						<input type="submit"  data-toggle="tooltip"  abm-component  ng-click="validate()"  value="Create"  ng-model="formData.create" class="btn btn-success btn-raised btn-lg">
+	  					<button class="btn btn-warning" type="button"  abm-component ng-click="cancel()">Cancel</button>
+        			</div>
+					<div class="tab-pane" id="signin-tab">
+						<span style="color:red" ng-show="hideForgot">{{errorNameLogin}}</span>
+						<span style="color:red" ng-hide="hideForgot">{{errorNameForgotPassword}}</span>
+						<abm-form-group ng-show="hideForgot">
+                			<label data-abm-label  type="floating">Email</label>
+                			<input type="email" abm-form-control name="user"  class="form-control"  ng-model="formData.name">
+              			</abm-form-group>
+              			<abm-form-group ng-show="hideForgot">
+                			<label data-abm-label  type="floating">Password</label>
+                			<input type="password" class="form-control" abm-form-control name="pass" ng-keypress="checkloginformemail()"ng-model="formData.pwd" >
+              			</abm-form-group>
+						<input type="submit" ng-show="hideForgot" data-toggle="tooltip"  abm-component   value="Login"  ng-model="formData.login"  ng-click="login()" class="btn btn-success btn-raised btn-lg">
+	  					<button class="btn btn-warning" ng-show="hideForgot" type="button"  abm-component ng-click="forgot()">Forgot Password</button>
+						
+						<abm-form-group ng-hide="hideForgot">
+                			<label data-abm-label  type="floating">Email</label>
+                			<input type="email" abm-form-control name="forgotEmail"  class="form-control"  ng-keypress="checkForgotPaswwordForm()" ng-model="formData.forgotMail">
+              			</abm-form-group>
+						<input type="submit"  ng-hide="hideForgot" data-toggle="tooltip"  abm-component   value="Forgot Password"  ng-model="formData.login"  ng-click="submitEmail()" class="btn btn-success btn-raised btn-lg">
+	  					<button class="btn btn-warning" ng-hide="hideForgot" type="button"  abm-component ng-click="showLogin()">Login</button>
+					</div>
+				</div>
+			</form>	 
+          </div>
+    </div>
+    <div class="modal-footer">
+      
+    </div> 
+
+  </script>
+   
+    <section id="services">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">How it works</h2>
+                    <hr class="primary">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 text-center ">
+                    <div class="service-box">
+                        
+                        <img class="sr-icons" alt="consider income" src="img/consideryourincome_olahtek.png">
+                        <h3>Consider Your Income</h3>
+                        <p>Our UI makes it easy to see and create different future income profiles that can represent your many different career paths.</p>
+                        <a href="" class="btn btn-raised btn-success" abm-component>Know More</a>
+                        
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 text-center">
+                    <div class="service-box">
+                        <img class="sr-icons" alt="add goal" src="img/addyoursgoals_olahtek.png">
+                        <h3>Add your Goals</h3>
+                        <p>By adding different goals, you can see how to use your income and other resources to achieve your many lifetime financial goals. </p>
+                        <a href="" class="btn btn-raised btn-success" abm-component>Know More</a>
+                        
+                    </div>
+                </div>
+               
+                <div class="col-lg-4 col-md-6 text-center">
+                    <div class="service-box">
+                        <img class="sr-icons" alt="see results" src="img/seeresults_olahtek.png">
+                        <h3>See the Results</h3>
+                        <p>See your assets growth under different scenarios and use the information to fine tune your financial plan or add more goals.</p>
+                        <a href="" class="btn btn-raised btn-success" abm-component>Know More</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    <!-- 
+    <section class="request-app no-padding">
+		<div class="request-app-overlay"></div>
+		<div class="container col-lg-4 col-lg-push-4">
+			<h3>Our Work will tell our liability</h3>
+			<h2 class="section-heading">REQUEST A CALL BACK</h2>
+			<div class="call-to-action">
+				<form name="signup">
+			      <abm-form-group error-messages="errorMap">
+			        <label data-abm-label type="floating">Name</label>
+			        <input type="text" name="name" class="form-control" abm-form-control ng-model="user.name" >
+			      </abm-form-group>
+			      <abm-form-group error-messages="errorMap">
+			        <label data-abm-label type="floating">Email</label>
+			        <input type="email" name="email" class="form-control"  abm-form-control ng-model="user.email" >
+			      </abm-form-group>
+			      <abm-form-group error-messages="errorMap">
+			        <label data-abm-label type="floating">Mobile</label>
+			        <input type="text" name="mobile" class="form-control"  abm-form-control ng-model="user.mobile" >
+			      </abm-form-group>
+			      <div class="col-lg-12 text-center">
+			      	<a href="" class="btn btn-white btn-outline " ng-disabled="signup.$invalid" abm-component>Submit</a>
+			      </div>
+			    </form>
+			</div>
+		</div>
+	</section> -->
+	
+    <aside class="bg-dark">
+        <div class="container ">
+             <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2>WealthSetter</h2>
+                    
+                </div>
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                	<div class=" social-icons ">
+		            	<a href="#"><i class="fa fa-facebook fa-2x"></i></a>
+						<a href="#"><i class="fa fa-google-plus fa-2x"></i></a>
+						<a href="#"><i class="fa fa-twitter fa-2x"></i></a>
+						<a href="#"><i class="fa fa-linkedin fa-2x"></i></a>
+						<a href="#"><i class="fa fa-youtube fa-2x"></i></a>
+		            </div>
+                </div>
+                
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <ul class="footer-menus">
+                    	<li><a href="">Terms of Use</a></li>
+                    	<li><a href="">Privacy</a></li>
+                    	<li><a href="">Legal & Trademark Notices</a></li>
+                    </ul>
+                    <p>&copy; 2017 WealthSetter. All right reserved.</p>
+                    <p>Terms and Conditions, features, availability, pricing, fees, service and support to change without notice.</p>
+                </div>
+                <!-- <div class="col-lg-4 col-lg-offset-2 text-center">
+                    <i class="fa fa-phone fa-3x sr-contact"></i>
+                    <p>123-456-6789</p>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <i class="fa fa-envelope-o fa-3x sr-contact"></i>
+                    <p><a href="mailto:your-email@your-domain.com">feedback@startbootstrap.com</a></p>
+                </div> -->
+            </div>
+        </div>
+    </aside> 
+    <!-- <section id="contact bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">Let's Get In Touch!</h2>
+                    <hr class="primary">
+                    <p>Ready to start your next project with us? That's great! Give us a call or send us an email and we will get back to you as soon as possible!</p>
+                </div>
+                <div class="col-lg-4 col-lg-offset-2 text-center">
+                    <i class="fa fa-phone fa-3x sr-contact"></i>
+                    <p>123-456-6789</p>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <i class="fa fa-envelope-o fa-3x sr-contact"></i>
+                    <p><a href="mailto:your-email@your-domain.com">feedback@startbootstrap.com</a></p>
+                </div>
+            </div>
+        </div>
+    </section> -->

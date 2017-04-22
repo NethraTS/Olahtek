@@ -1,0 +1,128 @@
+<div class="col-xs-8 col-xs-push-2">
+    <form name="assetsForm" class="form-horizontal">
+    	<h3 class="text-center"  id="investment">Assets</h3>
+   		<div class="row" ng-hide="!house">
+   			<abm-form-group error-messages="errorMap">
+		        <label  >House market value</label>
+		        <input type="text" name="houseMarketValue" onkeypress="return onlyNumbers(event,this)"
+							maxlength="12" ng-change="calculateEquity()" type="number"
+							placeholder="" maxlength="15" class="form-control" abm-form-control
+							ng-model="formData3.houseValue" ng-required="house" />
+		    </abm-form-group>
+		    <abm-form-group error-messages="errorMap">
+		        <label  >Remaining mortgage</label>
+		        <input type="text" name="remainingMortgage" onkeypress="return onlyNumbers(event,this)"
+							maxlength="12" ng-change="calculateEquity()" min="0"
+							type="number" placeholder="" maxlength="15" class="form-control" abm-form-control
+							ng-model="formData3.remainingMortgage" ng-required="house"/>
+		    </abm-form-group>
+		     <abm-form-group error-messages="errorMap">
+		        <label >Remaining year of Mortgage</label>
+		        <input type="text" name="remainingYearsMortgage" onkeypress="return onlyNumbersWithoutFloating(event,this)"
+							maxlength="2" placeholder="" maxlength="15" class="form-control" abm-form-control
+							ng-model="formData3.remainingYearsMortgage" ng-required="house"/>
+		    </abm-form-group>
+		    <abm-form-group error-messages="errorMap">
+		        <label  >What is your current mortgage rate?</label>
+		        <input type="text" name="remainingMortgageInterestRate" onkeypress="return onlyNumbers(event,this)" maxlength="5"
+							placeholder="" maxlength="2" class="form-control" abm-form-control
+							ng-model="formData3.remainingMortgageInterestRate" ng-required="house" />
+		    </abm-form-group>
+		    <abm-form-group error-messages="errorMap">
+		        <label  >House appreciation rate</label>
+		        <input type="text" onkeypress="return onlyNumbers(event,this)" maxlength="5"
+                            placeholder="" name="houseAppreciationRate" maxlength="2" class="form-control" abm-form-control
+                            ng-model="formData3.houseAppreciationRate" ng-required="house" />
+		    </abm-form-group>
+		    <abm-form-group error-messages="errorMap">
+		        <label  >Real Estate</label>
+		        <input type="text" type="text" onkeypress="return onlyNumbers(event,this)"
+							maxlength="12" name="realestate" placeholder="" class="form-control" abm-form-control
+							ng-model="formData3.realestate" ng-required="house" />
+		    </abm-form-group>
+   		</div>
+   		<div class="row">
+      <abm-form-group error-messages="errorMap">
+        <label  >Cash or cash-equivalent (cash, savings account, checking account)</label>
+        <input type="text" type="text" onkeypress="return onlyNumbers(event,this)"
+						maxlength="15" placeholder="" name="cash" class="form-control" abm-form-control
+						ng-model="formData3.cash" required >
+      </abm-form-group>
+      <abm-form-group error-messages="errorMap">
+        <label  >Taxable Investments (regular brokerage account):</label>
+        <input type="text" onkeypress="return onlyNumbers(event,this)" maxlength="15"
+						placeholder="" name="taxableInvestments" class="form-control" abm-form-control
+						ng-model="formData3.Taxable_Investments" required >
+      </abm-form-group>
+      <abm-form-group error-messages="errorMap">     
+      <label  >529 Plans and Retirement Accounts(401k, traditional IRA) </label>
+	  <select class="form-control" name="nonTaxableInvestment" ng-model="formData3.Non_Taxable_Investments" ng-change="iralimits()" required>
+		<option ng-selected="limit.id == formData3.Non_Taxable_Investments"
+			ng-repeat="limit in limits"  ng-value="limit.id">{{limit.id}}</option>
+	  </select>
+	  </abm-form-group>
+	  </div>
+	  <div class="row" ng-hide="limit">
+      <abm-form-group error-messages="errorMap">
+        <label  >Balance in 401(k) account</label>
+        <input type="text" name="u401" onkeypress="return onlyNumbers(event,this)"
+							maxlength="12" type="number"
+							placeholder="" maxlength="15" class="form-control" abm-form-control
+							ng-model="formData3.u401" ng-required="!limit" >
+      </abm-form-group>
+      <abm-form-group error-messages="errorMap">
+        <label  >Balance in traditional IRA account</label>
+        <input type="text" name="uIRA" onkeypress="return onlyNumbers(event,this)"
+							maxlength="12"  min="0"
+							type="number" placeholder="" maxlength="15" class="form-control" abm-form-control
+							ng-model="formData3.uIRA" ng-required="!limit">
+      </abm-form-group>
+      <abm-form-group error-messages="errorMap">
+        <label  >Balance in Roth IRA account</label>
+        <input type="text" name="uRothIra" onkeypress="return onlyNumbers(event,this)"
+							maxlength="12" placeholder="" maxlength="15" class="form-control" abm-form-control
+							ng-model="formData3.uRothIra" ng-required="!limit" >
+      </abm-form-group>
+      <abm-form-group error-messages="errorMap">
+        <label  >Balance in 529 plan</label>
+        <input type="text" name="u529" onkeypress="return onlyNumbers(event,this)" maxlength="13"
+							placeholder="" maxlength="12" class="form-control" abm-form-control
+							ng-model="formData3.u529" ng-required="!limit" >
+      </abm-form-group>
+      </div>
+     
+      <!-- spouse assets details-->
+      <div class="row" ng-hide="limitSpouse">
+	      <abm-form-group error-messages="errorMap">
+	        <label >Balance in Spouse 401(k) account</label>
+	        <input type="text" name="s401" onkeypress="return onlyNumbers(event,this)"
+								maxlength="12" type="number"
+								placeholder="" maxlength="15" class="form-control" abm-form-control
+								ng-model="formData3.s401" ng-required="!limitSpouse" >
+	      </abm-form-group>
+	      <abm-form-group error-messages="errorMap">
+	        <label >Balance in Spouse traditional IRA account</label>
+	        <input type="text" name="sIRA" onkeypress="return onlyNumbers(event,this)" maxlength="12"  min="0"
+								type="number" placeholder="" maxlength="15" class="form-control" abm-form-control
+								ng-model="formData3.sIRA" ng-required="!limitSpouse">
+	      </abm-form-group>
+	      <abm-form-group error-messages="errorMap">
+	        <label >Balance in Spouse Roth IRA account</label>
+	        <input type="text" name="sRothIra" onkeypress="return onlyNumbers(event,this)"
+								maxlength="12" placeholder="" maxlength="15" class="form-control" abm-form-control
+								ng-model="formData3.sRothIra" ng-required="!limitSpouse" >
+	      </abm-form-group>
+	      <abm-form-group error-messages="errorMap">
+	        <label >Balance in Spouse 529 plan</label>
+	        <input type="text" name="s529" onkeypress="return onlyNumbers(event,this)" maxlength="13"
+								placeholder="" maxlength="12" class="form-control" abm-form-control
+								ng-model="formData3.s529"  ng-required="!limitSpouse">
+	      </abm-form-group>
+      </div>
+      <!--  end of spouse assets details -->
+      <input type=hidden ng-model="formData3.form" value="form4" ng-init="formData3.form='Assets'">
+      
+      <button class="btn btn-raised btn-primary pull-right" abm-component  ng-disabled="assetsForm.$invalid"  ng-click="submitPortfolio1()" >Next</button>
+    </form>
+    
+  </div>

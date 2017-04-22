@@ -1,0 +1,341 @@
+<style>
+.main-view {
+	height: auto;
+}
+
+.form-group.label-static label.control-label {
+	color: #BDBDBD;
+}
+
+.content-area {
+	background: #f6f6f6;
+}
+
+.form-group {
+	margin: 5px 0;
+	padding: 0;
+}
+
+#whitebg {
+	background-color: #fff;
+}
+
+#labelColor {
+	color: #333;
+	text-align: left;
+}
+
+#money {
+	padding-left: 10%;
+}
+
+.money-fieldmodel::before {
+	content: "$";
+	position: absolute;
+	font-size: 16px;
+	display: block;
+	padding: 3.2%;
+	padding-top: 2.7%;
+	padding-left: 0%;
+}
+
+.money-fieldmodel1::before {
+	content: "%";
+	position: absolute;
+	font-size: 16px;
+	display: block;
+	padding: 3.2%;
+	padding-top: 2.7%;
+	padding-left: 0%;
+}
+
+.money-fieldmodel2::before {
+	content: "$";
+	position: absolute;
+	font-size: 16px;
+	display: block;
+	padding: 3.2%;
+	padding-top: 2.7%;
+	padding-left: 0%;
+}
+
+.money-fieldmodel3::before {
+	content: "$";
+	position: absolute;
+	font-size: 16px;
+	display: block;
+	padding: 3.2%;
+	padding-top: 2.7%;
+	padding-left: 0%;
+}
+
+.money-fieldmodel4::before {
+	content: "$";
+	position: absolute;
+	font-size: 16px;
+	display: block;
+	padding: 3.2%;
+	padding-top: 2.7%;
+	padding-left: 0%;
+}
+
+.money-fieldmodel5::before {
+	content: "$";
+	position: absolute;
+	font-size: 16px;
+	display: block;
+	padding: 3.2%;
+	padding-top: 2.7%;
+	padding-left: 0%;
+}
+
+.money-fieldmodel6::before {
+	content: "$";
+	position: absolute;
+	font-size: 16px;
+	display: block;
+	padding: 3.2%;
+	padding-top: 2.7%;
+	padding-left: 0%;
+}
+
+.money-fieldmodel7::before {
+	content: "%";
+	position: absolute;
+	font-size: 16px;
+	display: block;
+	padding: 3.2%;
+	padding-top: 2.7%;
+	padding-left: 0%;
+}
+
+#calcColor {
+	color: #2e4dc7;
+	text-align: left;
+	font-weight: 500;
+}
+
+.form-group label.control-label {
+	font-size: 15px;
+}
+
+td {
+	text-align: center;
+}
+
+#leftMargin {
+	margin-left: 5%;
+}
+
+.heading {
+	font-weight: 700;
+	background-color: lightgray;
+}
+
+.marginTop {
+	margin-top: 5%;
+}
+
+.form-horizontal .radio {
+	padding-top: 20px;
+}
+hr {
+    max-width : 100%;
+    border-width : 1px;
+    border-color : gray;
+}
+</style>
+
+<div ng-init="load();" ng-cloak>
+	<toaster-container
+		toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-center'}"></toaster-container>
+	<script type="text/ng-template" id="myTemplateWithData.html">
+          <p>{{toaster.data}}</p>
+        </script>
+
+	<div class="container" style="padding-top: 100px">
+		<h3 class="text-center" id="calcColor">Car Lease Calculator</h3>
+		<div class="row">
+			<div class="col-xs-6" id="whitebg">
+				<form name="carleaseForm" class="form-horizontal" novalidate>
+					<div class="row">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Car
+								Price:($)</label>
+							<div class="col-sm-6">
+								<span class="money-fieldmodel"> <input type="text"
+									name="carPrice"
+									class="form-control" maxlength="9"
+									onkeypress="return numbersonly(event)"
+									ng-model="formdata.carPrice" id="money" required /> <span
+									ng-show="carleaseForm.carPrice.$invalid" class="help-block">
+										<code>This field is mandatory</code>
+								</span>
+
+								</span>
+
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Lease
+								Term:(years)</label>
+							<div class="col-sm-6">
+								<select class="form-control ng-pristine ng-valid"
+									ng-model="formdata.loanTerm">
+									<option>3</option>
+									<option>4</option>
+									<option>5</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Interest
+								Rate:(%)</label>
+							<div class="col-sm-6">
+								<span class="money-fieldmodel1"> <input type="text"
+									
+									class="form-control" maxlength="5"
+									onkeypress="return isNumberKey(event,this)"
+									ng-model="formdata.interestRate" id="money">
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Down
+								Payment:($)</label>
+							<div class="col-sm-6">
+								<span class="money-fieldmodel2"> <input type="text"
+									class="form-control" onkeypress="return numbersonly(event)"
+									maxlength="15" ng-model="formdata.downPayment" id="money">
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Trade-in
+								Value:($)</label>
+							<div class="col-sm-6">
+								<span class="money-fieldmodel3"> <input type="text"
+									class="form-control" onkeypress="return numbersonly(event)"
+									maxlength="15" ng-model="formdata.tradeInValue" id="money"/ >
+								</span>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Acquisition
+								Cost:($)</label>
+							<div class="col-sm-6">
+								<span class="money-fieldmodel5"> <input type="text"
+									class="form-control" onkeypress="return numbersonly(event)"
+									maxlength="15" ng-model="formdata.acquisitionCost" id="money"/ >
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Lease Residual
+								Value:($)</label>
+							<div class="col-sm-6">
+								<span class="money-fieldmodel6"> <input type="text"
+									class="form-control ng-pristine ng-valid lease" maxlength="5"
+									ng-model="formdata.residualValue" id="money"/ >
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+					<div class="row">
+                        <div class="form-group">
+                            <label id="labelColor" class="control-label col-sm-6">Doc,License
+                                & Registration Fees:($)</label>
+                            <div class="col-sm-6">
+                                <span class="money-fieldmodel4"> <input type="text"
+                                    class="form-control" onkeypress="return numbersonly(event)"
+                                    maxlength="15" ng-model="formdata.licenseFee" id="money"/ >
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Sale
+								Tax:(%)</label>
+							<div class="col-sm-6">
+								<span class="money-fieldmodel7"> <input type="text"
+									class="form-control ng-pristine ng-valid lease"
+									onkeypress="return isNumberKey(event,this)"
+									ng-model="formdata.saleTax" id="money"/ maxlength="5" >
+								</span>
+							</div>
+						</div>
+					</div>
+					 <div class="row">
+						<div
+							style="margin-top: 2%; margin-bottom: 2%; color: red; text-align: center;">{{cle_msgerr}}</div>
+						<br>
+					</div>
+					<div class="row">
+						<div class="col-sm-6 col-xs-push-5">
+							<button type="button" ng-click="Reset()"
+								class="btn btn-raised btn-success" ng-click="">Reset</button>
+						</div>
+						<div class="col-sm-6 col-xs-push-2">
+							<button type="button" ng-click="calculate()"
+								class="btn btn-raised btn-success">Calculate</button>
+						</div>
+					</div>
+				</form>
+			</div>
+				<div class="col-xs-5" id="leftMargin" ng-show="showResults">
+				<h3 class="text-center" id="calcColor"  style="margin-top:-13%">Car Lease Payment Summary</h3>
+            <hr />
+             
+        <div class="row">
+            <div class="col-xs-6">
+                <label id="labelColor">Interest_rate</label>
+                    <div>&#36;{{interestrate}}</div>
+                   <!--   <hr /> -->
+            
+            </div>
+            <div class="col-xs-6">
+                <label  id="labelColor">Monthly Interest rate</label>
+                     <div>&#36;{{monthlyinterestrate2}}</div>
+                     <!-- <hr />        -->     
+            </div>
+        </div>
+        <hr />       
+        <div class="row">
+            <div class="col-xs-6">
+                <label   id="labelColor">Loan</label>
+                <div>&#36;{{loan}}</div>
+              <!--   <hr /> -->
+            </div>
+            <div class="col-xs-6">
+                <label  id="labelColor">Monthly Payment</label>
+                 <div>&#36;{{monthlypayment1}}</div>
+                    <!--  <hr />   -->          
+            </div>
+        </div>
+        <hr /> <br><br>      
+      
+                      <div class="row">
+						<div class="row" style="color:black;font-size:16px;">Monthly Lease Payment : &#36;{{monthlypayment1}}</div>
+			</div>
+	</div>
+	<div class="marginTop"></div>
+</div>
+</div>
+</div>
+
+           
+                   

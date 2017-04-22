@@ -1,0 +1,216 @@
+<style>
+.main-view {
+	height: auto;
+}
+
+.form-group.label-static label.control-label {
+	color: #BDBDBD;
+}
+
+.content-area {
+	background: #f6f6f6;
+}
+
+.form-group {
+	margin: 5px 0;
+	padding: 0;
+}
+
+#whitebg {
+	background-color: #fff;
+}
+
+#labelColor {
+	color: #333;
+	text-align: left;
+}
+
+#calcColor {
+	color: #2e4dc7;
+	text-align: left;
+	font-weight: 500;
+}
+
+.form-group label.control-label {
+	font-size: 15px;
+}
+
+td, th {
+	text-align: left;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th,
+	.table>thead>tr>td, .table>thead>tr>th {
+	border-top: 0px;
+}
+
+#leftMargin {
+	margin-left: 5%;
+}
+
+.heading {
+	font-weight: 700;
+	background-color: lightgray;
+}
+
+.marginTop {
+	margin-top: 5%;
+}
+
+.form-horizontal .radio {
+	padding-top: 20px;
+}
+.money-fieldmodel::before{
+	content: "$";
+	position: absolute;
+	font-size: 16px;
+	display: block;
+	padding: 3.2%;
+	 padding-top:2.7%;
+	padding-left: 0%;
+}
+#money {
+	padding-left : 5%;
+}
+hr {
+	max-width : 100%;
+	border-width : 1px;
+	border-color : gray;
+}
+
+</style>
+
+<div ng-init="load();" ng-cloak>
+	<toaster-container
+		toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-center'}"></toaster-container>
+	<script type="text/ng-template" id="myTemplateWithData.html">
+		<p>{{toaster.data}}</p>
+    </script>
+	<div class="container" style="padding-top: 100px">
+		<div class="row">
+			<h3 class="text-center" id="calcColor">Income Tax Calculator</h3>
+			<br>
+			<div class="col-xs-6" id="whitebg">
+				<form name="incomeTaxForm" class="form-horizontal" novalidate>
+					<div class="row">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">State</label>
+							<div class="col-sm-6">
+								<ui-select name="state" ng-model="formdata.state" name="state"
+									title="Select your State" style="padding-top:10px" required>
+								<ui-select-match name="state">{{$select.selected}}</ui-select-match>
+								<ui-select-choices
+									repeat="item in states | filter: $select.search">
+								<div ng-bind-html="item | highlight: $select.search"></div>
+								</ui-select-choices> </ui-select>
+								<span ng-show="incomeTaxForm.state.$invalid" class="help-block"><code>This field is mandatory</code></span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Filing
+								Status</label>
+							<div class="col-sm-6">
+								<select ng-model="formdata.filingStatus" class="form-control" required name="filingstatus"
+									ng-change="update2()">
+									<option
+										ng-selected="filingOptions.id == editBasicDetail.filingStatus"
+										ng-repeat="filingOptions in filingOptions"
+										ng-value="filingOptions.id">{{filingOptions.id}}</option>
+								</select>
+								<span ng-show="incomeTaxForm.filingstatus.$invalid" class="help-block"><code>This field is mandatory</code></span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Gross
+								Annual Income</label>
+							<div class="col-sm-6">
+							<span class="money-fieldmodel">
+								<input maxlength="15" type="text" class="form-control" required
+									ng-model="formdata.homeValue" ng-change="update4()" id="money"
+									onkeypress="return numbersonly(event,this)" name="grossincome" />
+								<span ng-show="incomeTaxForm.grossincome.$invalid" class="help-block"><code>This field is mandatory</code></span>
+							</span>
+								
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group">
+							<label id="labelColor" class="control-label col-sm-6">Personal
+								Exeption</label>
+							<div class="col-sm-6">
+								<input type="text" maxlength="3" class="form-control" required
+									ng-model="formdata.personalexe" ng-change="update3()"
+									onkeypress="return numbersonly(event,this)" name="personalexe"/>
+								<span ng-show="incomeTaxForm.personalexe.$invalid" class="help-block"><code>This field is mandatory</code></span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div style="color: red; text-align: center;">{{errormsg}}</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6 col-xs-push-5">
+							<button class="btn btn-raised btn-success" ng-click="resetForm()">Reset</button>
+						</div>
+						<div class="col-sm-6 col-xs-push-2">
+							<button class="btn btn-raised btn-success"
+								ng-click="calculate()">Calculate</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="col-xs-5" id="leftMargin" ng-hide="show1 || show2 || show3 || show4">
+				<h3 class="text-center" id="calcColor" style="margin-top:-13%">Your Income Tax</h3>
+				<hr />
+				<div class="row">
+					<div class="table-responsive">
+						<table class="table">
+							<tr>
+								<th>Tax Type</th>
+								<th>Tax Amount</th>
+							</tr>
+							<tr>
+								<td>Federal</td>
+								<td>&#36;{{federalTax}}</td>
+							</tr>
+							<tr>
+								<td>State</td>
+								<td>&#36;{{stateTax}}</td>
+							</tr>
+							<tr>
+								<td>FICA</td>
+								<td>&#36;{{fICASocialSecurityTax}}</td>
+							</tr>
+							<tr>
+								<td>Medicare</td>
+								<td>&#36;{{fICAMedicareTax}}</td>
+							</tr>
+							<tr>
+								<td>Total Income Taxes</td>
+								<td>&#36;{{TotalIncomeTaxes}}</td>
+							</tr>
+							<tr>
+								<td>Total After Taxes</td>
+								<td>&#36;{{incomeAfterTaxes}}</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="row" style="color:black;font-size:16px;"> Total estimated Tax Burden = &#36;{{TotalIncomeTaxes}}</div>
+			</div>
+		</div>
+		
+		<div class="row" id="whitebg" ng-hide="show1 || show2 || show3 || show4">
+		<h3 class="text-center" id="calcColor" style="padding-left:2%">Total Estimated Tax Burden</h3>
+			<div class="col-lg-12">
+				<nvd3 options="options" data="data"></nvd3>
+			</div>
+		</div>
+		<div class="marginTop"></div>
+	</div>
+</div>

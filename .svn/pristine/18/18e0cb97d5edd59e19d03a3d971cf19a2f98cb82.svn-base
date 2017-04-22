@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="wealthsetter" >
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>WealthSetter</title>
+    <link rel="stylesheet" type="text/css" href="components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="components/font-awesome/css/font-awesome.min.css"> 
+    <!-- <link rel="stylesheet" type="text/css" href="components/rdash-ui/dist/css/rdash.min.css"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="components/nvd3/build/nv.d3.css"> -->
+    <link rel="stylesheet" href="components/nvd3/nv.d3-1.8.3.min.css"/>
+    <link rel="stylesheet" type="text/css" href="components/bootstrap-material-design/dist/css/bootstrap-material-design.css">
+    <link rel="stylesheet" type="text/css" href="components/bootstrap-material-design/dist/css/ripples.css">
+    <link rel="stylesheet" type="text/css" href="components/rdash-ui/dist/css/rdash.css">
+<!--     <link rel="stylesheet" type="text/css" href="components/angular-ui-select/dist/select.css">
+ -->    
+ 	<!-- <link rel="stylesheet" type="text/css" href="components/snackbarjs-master/dist/css/snackbar.min.css"> -->
+    <link href="css/creative.css" rel="stylesheet">
+   	<link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+   	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css"> -->
+    <link rel="stylesheet" href="css/toaster.css"> 
+    <link href="css/select.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet" /> 
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+   
+</head>
+
+<body id="page-top" scroll ng-controller="MasterCtrl" ng-init="load();" ng-cloak >
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top" ng-class="{affix:boolChangeClass}" abm-component>
+        <div class="container">
+            
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" ui-sref="{{homeLocation}}" >WealthSetter</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" ui-sref="{{homeLocation}}">Home</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#services">How It WOrks</a>
+                    </li>
+                    <!-- <li>
+                        <a class="page-scroll" href="#contact">Resources</a>
+                    </li> -->
+                    <li class="dropdown">
+          				<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Resources <span class="caret"></span></a>
+				          <ul class="dropdown-menu">
+				            <li><a ui-sref="mortgageresult">Mortgage Calculator</a></li>
+				            <li role="separator" class="divider"></li>
+				            <li class="dropdown dropdown-submenu">
+				            <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Car Calculator</a>
+				            	 <ul class="dropdown-menu">
+				            	 	<li><a ui-sref="carloanresult">Car Loan Calculator</a></li>
+				            	 	<li role="separator" class="divider"></li>
+				            		<li><a ui-sref="carleaseresult">Car Lease Calculator</a></li>
+				            	</ul>
+				            </li>
+				            <li role="separator" class="divider"></li>
+				            <li><a ui-sref="ssb">SocialSecurity Benefits</a></li>
+				            <li role="separator" class="divider"></li>
+				            <li><a ui-sref="income-tax-calculator">Income Tax Calculator</a></li>
+				          </ul>
+        			</li>
+
+                    <!-- <li>
+                        <a class="page-scroll" href="#contact">Case Studies</a>
+                    </li> -->
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Case Studies <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="">Case Study 1</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="">Case Study 2</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="">Case Study 3</a></li>
+						</ul>
+					</li>
+                    <li ng-show="userFlag">
+                        <a href="#" abm-component ng-click="loginLogoutClick()" >{{ loginLogoutText }}</a>
+                    </li>
+                   
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    
+	<div ui-view class="content-area main-view" ng-class="{welcome:welcomeContentArea}" ></div>
+	
+	<script type="text/javascript" src="components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="components/jquery/dist/jquery.min.js"></script>
+  	<!-- <script type="text/javascript" src="components/d3/d3.js"></script>
+  	<script type="text/javascript" src="components/nvd3/build/nv.d3.js"></script>
+  	<script type="text/javascript" src="components/angular-nvd3/dist/angular-nvd3.js"></script> -->
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+  	<script type="text/javascript" src="components/angular-bootstrap/ui-bootstrap.js"></script>
+  	<script type="text/javascript" src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-sanitize.js"></script>
+  	<script type="text/javascript" src="components/angular-ui-select/dist/select.js"></script>
+  	
+ 	<script src="components/angular-nvd3/angular-nvd3.js"></script>
+ 	<!--  <script type="text/javascript" charset="utf-8" src="components/d3/d3.v2.js"></script>
+    <script src="components/nvd3/nv.d3.js"></script> -->
+     <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.2/nv.d3.min.js"></script> 
+    -->
+     <script type="text/javascript" src="components/d3/3.5.6/d3.min.js"></script>
+     <script type="text/javascript" src="components/nvd3/1.8.2/nv.d3.min.js"></script>
+  	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script> -->
+  	<!-- you need to include the shieldui css and js assets in order for the components to work -->
+	<link rel="stylesheet" type="text/css" href="components/shieldui/all.min.css" />
+	<script type="text/javascript" src="components/shieldui/all.min.js"></script>
+	<script type="text/javascript" src="components/shieldui/jszip.min.js"></script>
+	<!-- <script type="text/javascript" src="components/snackbarjs-master/dist/snackbar.min.js"></script> -->
+    <!-- inject:js -->
+ 	
+ 	<script src="lib/angular-animate.js"></script>
+ 	
+ 	<script src="lib/angular-bootstrap-material.js"></script>
+ 	
+ 	<script src="lib/angular-cookies.js"></script>
+ 	
+ 	<script src="lib/angular-messages.js"></script>
+ 	
+ 	<script src="lib/angular-ui-router.js"></script>
+ 	
+ 	<script src="lib/bootstrap.js"></script>
+ 	
+ 	<script src="lib/material.js"></script>
+ 	
+ 	<script src="lib/ripples.js"></script>
+ 	
+ 	<script src="js/custom.js"></script>
+ 	
+ 	<script src="js/module.js"></script>
+ 	
+ 	<script src="js/routes.js"></script>
+ 	
+ 	<script src="js/controllers/dashboard-ctrl.js"></script>
+ 	
+ 	<script src="js/service/auth.js"></script>
+ 	
+ 	<script src="js/controllers/home-ctrl.js"></script>
+ 	
+ 	<script src="js/controllers/ssb-ctrl.js"></script>
+ 	
+ 	<script src="js/controllers/incometax-ctrl.js"></script>
+ 	
+ 	<script src="js/controllers/master-ctrl.js"></script>
+ 	
+ 	<script src="js/controllers/welcome-ctrl.js"></script>
+ 	
+ 	<script src="js/controllers/mortgage-ctrl.js"></script>
+	
+    <script src="js/controllers/carloan-ctrl.js"></script>
+	
+	<script src="js/controllers/emergency-ctrl.js"></script>
+ 	
+ 	<script src="js/directives/loading.js"></script>
+ 	
+ 	<script src="js/directives/scroll.js"></script>
+ 	
+ 	<script src="js/directives/slide-down.js"></script>
+ 	
+ 	<script src="js/directives/toaster.js"></script>
+ 	
+ 	<script src="js/directives/widget-body.js"></script>
+ 	
+ 	<script src="js/directives/widget-footer.js"></script>
+ 	
+ 	<script src="js/directives/widget-header.js"></script>
+ 	
+ 	<script src="js/directives/widget.js"></script>
+ 	
+ 	 <script src="js/controllers/carlease-ctrl.js"></script>
+ 	
+ 	<!-- endinject -->
+ 	<script src="js/custom.js"></script>
+<!--  	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
+ -->  
+</body>
+
+</html>

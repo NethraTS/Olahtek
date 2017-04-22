@@ -1,0 +1,428 @@
+<style>
+.content-area{
+    padding-top:60px;
+}
+.navbar, .navbar.navbar-default{
+    background:inherit !important;
+}
+option {
+    color: black;
+}
+.form-group.label-static label.control-label {
+    color: #FFFFFF;
+}
+
+.form-control {
+    color: #FFFFFF;
+    background: rgb(46, 77, 199);
+}
+
+.slide-toggle {
+  overflow: hidden;
+  
+  background:#181818;
+color:#FFF;
+position: relative;
+
+width: 100%;
+height: 250px;
+padding: 0px;
+transition: top 1000ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+overflow: hidden;
+box-sizing: border-box;
+}
+
+
+
+</style>
+
+<div id="page-wrapper" ng-class="{'open': toggle}" ng-cloak ng-init="load()">
+  <!-- <script>document.write('<base href="' + document.location + '" />');</script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.2/nv.d3.min.css"/>
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.2/nv.d3.min.js"></script>
+ <script src="https://rawgit.com/krispo/angular-nvd3/v1.0.6/dist/angular-nvd3.js"></script> -->
+<!--  <script>document.write('<base href="' + document.location + '" />');</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.2/nv.d3.min.css"/>     -->
+    
+    <!-- Sidebar -->
+     <div id="sidebar-wrapper">
+      <ul class="sidebar">
+         <li class="sidebar-list">
+        <a ng-click="toggleSidebar();showSideInput=!showSideInput">Mortgage Calculator<span
+                    class="menu-icon fa fa-exchange"></span>
+            </a>
+        </li>
+        <li class="sidebar-main" > <!-- ng-show="!showSideInput" -->
+                <form name="mortgageForm1" class="form-horizontal">
+     
+                   <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                 <abm-form-group error-messages="errorMap">
+                      <label  data-abm-label >Classify The House</label>
+                    <select class="form-control" abm-form-control ng-required="formdata.income == 'HideIncome'"
+                            ng-model="formdata.forRental" ng-change="rental()"
+                            >
+                      <option   ng-repeat="rental in rentals" ng-value="rental" >{{rental}}</option> 
+                    </select>
+                  </abm-form-group>
+                        </div>
+                    </div>
+                     <div class="row">
+                      <div class="col-xs-10 col-xs-push-1" >
+                        <abm-form-group error-messages="errorMap">
+            <label data-abm-label>State</label>
+            <select class="form-control" ng-model="formdata.state"  ng-change="getStates()"  ng-change="getCities()"  abm-form-control ng-required="formdata.income == 'HideIncome'" >
+                            <option  ng-selected="state == editBasicDetail.state " 
+                            ng-repeat="state in states" ng-value="state">{{state}}</option>
+                        </select>
+                     </abm-form-group>
+                    </div>
+                    </div>
+                     <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                           <abm-form-group error-messages="errorMap">
+            <label data-abm-label>City</label>
+            <select class="form-control"
+                            ng-model="formdata.desired_locationcity"
+                            ng-change="getCounty()"  abm-form-control ng-required="formdata.income == 'HideIncome'">
+                            <!--  <option ng-selected="state.name == editBasicDetail.state " ng-repeat="state in states" ng-value="state.name">{{state.name}}</option> -->
+                            <option ng-selected="city==formdata.desired_locationcity"
+                                ng-repeat="city in citys">{{ city }}</option>
+            
+                    </select>
+          </abm-form-group>
+                        </div>
+                    </div>
+                     <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                           <abm-form-group error-messages="errorMap">
+            <label  data-abm-label >Home Value</label>
+            <input type="text" onkeypress="return numbersonly(event)" maxlength="9" class="form-control"  abm-form-control ng-required="formdata.income == 'HideIncome'" placeholder="$ " ng-model="formdata.homeValue" />
+          </abm-form-group>
+                        </div>
+                    </div>
+                     <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                          <abm-form-group error-messages="errorMap">
+            <label data-abm-label>Down Payment</label>
+            <span class="percent1-field"> 
+                    <select class="form-control ng-pristine ng-valid"  abm-form-control ng-required="formdata.income == 'HideIncome'"  ng-model="formdata.downPayment">
+                     <option ng-repeat="downpayment in downpayments" ng-value="downpayment">{{downpayment}}</option> 
+                    </select></span>
+          </abm-form-group>
+                        </div>
+                    </div>
+                    <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                          <abm-form-group error-messages="errorMap">
+            <label data-abm-label>Loan Type</label>
+            <span class="percent-field"> 
+                    <span style="color:red">{{lt_msgerr}}</span>
+                    <select class="form-control ng-pristine ng-valid"  abm-form-control ng-required="formdata.income == 'HideIncome'"
+                            ng-model="formdata.loanTerm" ng-change="loanTerms()"
+                            >
+                            <option  ng-repeat="loan in loans" ng-value="loan.name" >{{loan.name}}</option>
+                            </select> </span>
+          </abm-form-group>
+                        </div>
+                    </div>
+                    <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                            <abm-form-group error-messages="errorMap">
+            <label  data-abm-label >Interest Rate</label>
+            <span class="percent2-field">
+                    <input type="text" placeholder="%"  maxlength="5" class="form-control ng-pristine ng-valid mort"   abm-form-control ng-required="formdata.income == 'HideIncome'" ng-model="formdata.interestRate"  /></span>
+          </abm-form-group>
+                        </div>
+                    </div>
+                     <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                             <abm-form-group error-messages="errorMap">
+            <label  data-abm-label >Property Tax</label>
+            <span class="percent3-field"> 
+                    <span style="color:red">{{pt_msgerr}}</span>
+                    <input  type="text" placeholder="%" maxlength="5"  class="form-control ng-pristine ng-valid mort"  abm-form-control ng-required="formdata.income == 'HideIncome'"  ng-model="formdata.propertyTax"/>
+                     </span>
+          </abm-form-group>
+                        </div>
+                    </div>
+                     <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                            <abm-form-group error-messages="errorMap">
+            <label  data-abm-label >PMI</label>
+            <input type="text" onkeypress="return numbersonly(event)" maxlength="6" class="form-control"  abm-form-control ng-required="formdata.income == 'HideIncome'" placeholder="$ " ng-model="formdata.pmi" />
+          </abm-form-group>
+                        </div>
+                    </div>
+                     <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                            <abm-form-group error-messages="errorMap">
+            <label  data-abm-label >Property Type</label>
+           <select class="form-control"  abm-form-control ng-required="formdata.income == 'HideIncome'"
+                            ng-model="formdata.propertyType"
+                            ng-change="getHOA()">
+                                  <option>Townhouse</option> 
+                                  <option>Singlefamily</option>     
+                    </select>
+          </abm-form-group>
+                        </div>
+                    </div>
+                     <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                            <abm-form-group error-messages="errorMap">
+            <label  data-abm-label >HOA Fee</label>
+           <input type="text" class="form-control"  abm-form-control ng-required="formdata.income == 'HideIncome'" onkeypress="return numbersonly(event)" placeholder="$ " maxlength="6" ng-model="formdata.hoaFee"/>
+          </abm-form-group>
+                        </div>
+                    </div>
+                     <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                            <abm-form-group error-messages="errorMap">
+            <label  data-abm-label >Maintenance</label>
+            <input type="text"onkeypress="return numbersonly(event)" maxlength="6" class="form-control"  abm-form-control ng-required="formdata.income == 'HideIncome'" placeholder=" $" ng-model="formdata.maintenance" />
+          </abm-form-group>
+                        </div>
+                    </div>
+                     <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                            <abm-form-group error-messages="errorMap">
+            <label  data-abm-label >Home Insurance</label>
+            <input type="text" onkeypress="return numbersonly(event)" maxlength="9" class="form-control"  abm-form-control ng-required="formdata.income == 'HideIncome'" placeholder=" 0" ng-model="formdata.homeInsurance"/>
+          </abm-form-group>
+                        </div>
+                    </div>
+                     <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                            <abm-form-group error-messages="errorMap">
+            <label data-abm-label>Highest Tax Rate</label>
+            <select class="form-control ng-pristine ng-valid"  abm-form-control ng-required="formdata.income == 'HideIncome'" ng-model="formdata.highestTaxRate">
+                      <option ng-repeat="highesttax in highesttaxs" ng-value="highesttax">{{highesttax}}</option> 
+                    </select>
+          </abm-form-group>
+                        </div>
+                    </div>
+                     <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                            <abm-form-group error-messages="errorMap" ng-show="owner">
+            <label  data-abm-label  >Property Value Excluding Land</label>
+            <input type="text"  placeholder=" $" onkeypress="return numbersonly(event)" maxlength="9" class="form-control"  abm-form-control ng-required="formdata.income == 'HideIncome'"  ng-model="formdata.propertyLand"/>
+          </abm-form-group>
+                        </div>
+                    </div>
+                     <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                           <abm-form-group error-messages="errorMap" ng-show="owner">
+            <label  data-abm-label >Rental Income</label>
+             <input type="text" placeholder=" $" onkeypress="return numbersonly(event)" maxlength="9" class="form-control"  abm-form-control ng-required="formdata.income == 'HideIncome'"  ng-model="formdata.rentalIncome"/>
+          </abm-form-group>
+                        </div>
+                    </div>
+                     <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                           <abm-form-group error-messages="errorMap" ng-show="owner">
+            <label  data-abm-label >Management Fee</label>
+           <input type="text" placeholder=" $" onkeypress="return numbersonly(event)" maxlength="9" class="form-control"  abm-form-control ng-required="formdata.income == 'HideIncome'" ng-model="formdata.managementFee"/>
+          </abm-form-group>
+                        </div>
+                    </div>
+                     <div class="row">
+                       <div class="col-xs-10 col-xs-push-1" >
+                          <abm-form-group error-messages="errorMap" ng-hide="taxguest">
+            <label data-abm-label>Filing Status</label>
+            <select class="form-control"  abm-form-control ng-required="formdata.income == 'HideIncome'" ng-model="formdata.filingStatus">
+                                  <option>Single</option> 
+                                  <option>Married Filing Jointly</option>
+                                  <option>Head of Household</option> 
+                    </select>
+          </abm-form-group>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-10 col-xs-push-1">
+                    <div style="margin-top:2%;margin-bottom:2%;color:red;text-align: center;">{{mc_msgerr}}</div><br>
+                <div style="margin-top:2%;text-align: center;">
+                    <button  type="button" ng-click="calculate()"  class="btn btn-success btn-raised btn-md" >Calculate</button>
+                </div>
+                </div>
+                </div><br><br><br>
+                    </form>
+                    </li>
+                     </ul>
+    </div>
+    <div class="col-lg-12">
+        <div class="widget">
+            <div class="widget-header">
+                <div class="row">
+                    <div class="pull-left">
+                        <i class="fa" ng-class="icon"></i> Annual Amortization Schedule
+                    </div>
+                    <div class="pull-right col-xs-6 col-sm-4"></div>
+                </div>
+            </div>
+             
+            <div class="widget-body" ng-class="classes">
+                <div ng-show="loading" class="loading">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                    
+                </div>
+                <div ng-hide="loading" class="widget-content" >
+                   <div id="d3-chart-container1" style="width: auto; height: auto"></div>
+                    <nvd3 options="options" data="data"></nvd3>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+   <!--  <div> -->
+   
+   <div class="col-lg-12">
+        <div class="widget">
+            <div class="widget-header">
+                <div class="row">
+                    <div class="pull-left">
+                        <i class="fa" ng-class="icon"></i> Mortgage Payment Summary
+                    </div>
+                    <div class="pull-right col-xs-6 col-sm-4"></div>
+                </div>
+            </div>
+   
+    <div class="row">
+    <div ng-show="showResults" class="col-sm-6">
+    <table width="120%">
+                    <!-- <caption>Mortgage Payment Summary</caption> -->
+                   <tr>
+                        <th style="padding-bottom: 2%;" class="left">Loan pay-off date</th>
+                        <th style="padding-bottom: 2%;" class="right">PMI</th>
+                    </tr>
+                
+                    <tr>
+                        <td style="padding-bottom: 2%;" class="left">{{loanpayoff}}</td>
+                        <td style="padding-bottom: 2%;" class="right"> <span> $ {{pmi | number:0}} </span></td>
+                    </tr>
+                    <tr>
+                        
+                        <th style="padding-bottom: 2%;" class="left">Others<br>(HOA+Maintenance+PMI+HI)</th>
+                        <th style="padding-bottom: 2%;" class="right">Monthly Mortgage</th>
+                        
+                        
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom: 2%;" class="left"><span> $ {{others | number:0}} </span></td>
+                        <td style="padding-bottom: 2%;" class="right"><span> $ {{monthlymortgage | number:0}} </span></td>
+                    </tr>
+                    <tr>
+                        <th style="padding-bottom: 2%;" class="left">Total interest paid</th>
+                        <th style="padding-bottom: 2%;" class="right">Property Tax</th>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom: 2%;" class="left" id="totalinterest"><span>$ {{totalinterest | number:0}}</span></td>
+                        <td style="padding-bottom: 2%;" class="right"><span>$ {{proptax | number:0}}</span></td>
+                    </tr>
+                    <tr>
+                        <th style="padding-bottom: 2%;" class="left">Annual payment amount</th>
+                        <th style="padding-bottom: 2%;" class="right">Total of 360 payments<par></th>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom: 2%;" class="left"><span>$ {{exactAnual_morgage | number:0}} </span></td>
+                        <td style="padding-bottom: 2%;" class="right" id="tot_annual_exp"><span>$ {{totalAnualhouseExpense | number:0}} </span></td>
+                    </tr>
+                    <tr>
+                        <th style="padding-bottom: 2%;" class="left">Taxable Deduction</th>
+                        <th style="padding-bottom: 2%;" class="right">Tax Saving</th>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom: 2%;" class="left"><span>$ {{taxablededuction | number:0}}<span></td>
+                        <td style="padding-bottom: 2%;" class="right"><span>$ {{taxsaving | number:0}}<span></td>
+                    </tr>
+                    
+                    <tr ng-show="income">
+                        
+                        <th style="padding-bottom: 2%;" class="left">Additional Tax</th>
+                        <th style="padding-bottom: 2%;" class="right">Income After Tax</th>
+                    </tr >
+                    <tr ng-show="income">
+                        
+                        <td style="padding-bottom: 2%;" class="left">$ {{additionaltax | number:0}}</td>
+                        <td style="padding-bottom: 2%;" class="right"><span>$ {{incomeaftertaxes | number:0}}<span></td>
+                    </tr>
+                    <tr ng-show="income">
+                        
+                        <th style="padding-bottom: 2%;" class="left">Tax benefit</th>
+                        <th style="padding-bottom: 2%;" class="right">Cost After Tax</th>
+                    </tr>
+                    <tr ng-show="income">
+                        
+                        <td style="padding-bottom: 2%;" class="left">$ {{taxbenefit | number:0}}</td>
+                        <td style="padding-bottom: 2%;" class="right"><span>$ {{costaftertax | number:0}}<span></td>
+                    </tr>
+                    <tr>
+                        
+                        <th style="padding-bottom: 2%;" class="left">Interest Paid in the First Year</th>
+                        <th style="padding-bottom: 2%;" class="right"></th>
+                    </tr>
+                    <tr>
+                        
+                        <td style="padding-bottom: 2%;" class="left"><span>$ {{Firstyearinterest1 | number:0}}<span> </td>
+                        <td style="padding-bottom: 2%;" class="right"></td>
+                    </tr>
+                    </table>
+                    </div >
+                    <div  class="col-sm-6" > <!-- class="col-sm-6" -->
+                        <div ng-show="showResults"  style="color:black;text-align:center;font-size:18px;">Loan Breakdown</div><!-- ng-show="showResults" -->
+                         <div  id="ChartAccessAgesByCountD3" style="height:260px;" data-drilldown-destination="filelist_by_category" data-drilldown-key="atime"></div>
+                     </div>
+     </div>  
+     
+     <div class="widget-body" ng-class="classes">
+                <div ng-show="loading" class="loading">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+                <div ng-hide="loading" class="widget-content">
+                    <div id="d3-chart-container1" style="width: auto; height: auto"></div>
+                    <br>
+                   
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+     
+     <div  style="margin-top:2%;text-align: center;margin-left : -2%">
+                    <button type="button" ng-click="showTable()" ng-show="showButton" class="btn btn-success btn-raised btn-md">Show Amortization Schedule</button>
+                    <button type="button" ng-click="hideTable()" ng-show="hideButton" class="btn btn-success btn-raised btn-md">Hide Amortization Schedule</button>
+                    </div><br> 
+                   <div> 
+                   <!--  <div class="container"> -->
+  <div class="col-lg-12">
+      <div class="panel panel-default">
+       <!--  <div class="panel-heading">
+          <h4>
+            Fixed Header Scrolling Table 
+          </h4>
+        </div> -->
+        <div ng-hide="Annual" >
+         <table class="table table-fixed">
+          <thead>
+            <tr>
+              <th class="col-lg-2">YEAR</th><th class="col-lg-2">RATE</th><th class="col-lg-2">MONTHLY MORTGAGE</th><th class="col-lg-2">REMAINING MORTGAGE</th><th class="col-lg-2">HOME EQUITY</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="arr in remainingmortgage">
+              <td class="col-xs-2">{{arr.year}}</td><td class="col-xs-2">{{Interestrate.toFixed(2)}}%</td><td class="col-xs-2"><span>$ {{monthlymortgage | number:0}}</span></td><td class="col-xs-2"><span>$ {{arr.remmort.toFixed(0) | number:0}}</span></td><td class="col-xs-2"><span>$ {{arr.houseEquity.toFixed(0) | number:0}}</span></td>
+            </tr>
+          </tbody>
+        </table> 
+         </div>
+      </div>
+  </div>
+<!-- </div> -->
+</div>
+      </div>
+  <!-- </div> -->
+  

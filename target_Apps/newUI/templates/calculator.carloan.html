@@ -1,0 +1,90 @@
+<style>
+    .content-area{
+        background:rgb(46, 77, 199);
+    }
+    .form-group{
+        margin:5px 0;
+        padding:0;
+    }
+   
+    </style>
+<div class="container"  style="padding-top:100px" >
+        <div class="jumbotron container-fluid btn-group-sm" style="min-height:500px">
+            <div class="col-lg-6 col-lg-push-3">
+    <form name="carloanForm" class="form-horizontal">
+        <h3 class="text-center">Car Loan Calculator</h3><br><br>
+      <!-- <abm-form-group error-messages="errorMap">
+        <label data-abm-label type="floating">Classify The House</label>
+        <input type="text" name="name" class="form-control" abm-form-control ng-model="user.name" >
+      </abm-form-group> -->
+      <div class="row" >
+        <div class="col-xs-6">
+          <abm-form-group error-messages="errorMap">
+            <label  data-abm-label >Car Price</label>
+            <input type="text" onkeypress="return numbersonly(event)" maxlength="15" class="form-control" placeholder="$" ng-model="formdata.carPrice" />
+          </abm-form-group>
+        </div>
+        <div class="col-xs-6">
+          <abm-form-group error-messages="errorMap">
+            <label data-abm-label>Loan Term</label>
+          <select class="form-control ng-pristine ng-valid" 
+                            ng-model="formdata.loanTerm"
+                            >
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            </select></span>
+            </select>
+          </abm-form-group>
+        </div>
+      </div>
+      
+      <div class="row" >
+        <div class="col-xs-6">
+          <abm-form-group error-messages="errorMap">
+            <label  data-abm-label >Interest Rate</label>
+           <input type="text" class="form-control ng-pristine ng-valid loan"  maxlength="5" ng-model="formdata.interestRate" />
+          </abm-form-group>
+        </div>
+        <div class="col-xs-6">
+          <abm-form-group error-messages="errorMap">
+            <label  data-abm-label >Down Payment</label>
+            <input type="text" onkeypress="return numbersonly(event)" maxlength="15"  class="form-control" placeholder="$" ng-model="formdata.downPayment" />
+          </abm-form-group>
+        </div>
+      </div>
+      
+      <div class="row" >
+        <div class="col-xs-6">
+          <abm-form-group error-messages="errorMap">
+            <label  data-abm-label >Trade-in Value</label>
+             <input type="text" onkeypress="return numbersonly(event)" class="form-control"  maxlength="15" placeholder="$"   ng-model="formdata.tradeInValue" />
+          </abm-form-group>
+        </div>
+        <div class="col-xs-6">
+          <abm-form-group error-messages="errorMap">
+            <label  data-abm-label >Doc,License & Registration Fees</label>
+           <input type="text" onkeypress="return numbersonly(event)" maxlength="15"class="form-control" placeholder="$" ng-model="formdata.licenseFee" />
+          </abm-form-group>
+        </div>
+      </div>
+      <div class="row" >
+        <div class="col-xs-6">
+          <abm-form-group error-messages="errorMap">
+            <label  data-abm-label >Sale Tax</label>
+             <input type="text" class="form-control ng-pristine ng-valid loan" maxlength="5" ng-model="formdata.saleTax">
+          </abm-form-group>
+        </div>
+      </div>
+      <div style="margin-top:2%;margin-bottom:2%;color:red;text-align: center;">{{clc_msgerr}}</div><br>
+                <div style="margin-top:2%;text-align: center;">
+                    <button  type="button" ng-click="calculate()" class="btn btn-success btn-raised btn-md" >Calculate</button>
+                </div>
+       <!-- <div class="col-xs-6">
+        <a href="" class="btn btn-raised btn-primary" abm-component>Calculate</a>
+        </div> -->
+    </form>
+  </div>
+  </div>
+  </div>
+   

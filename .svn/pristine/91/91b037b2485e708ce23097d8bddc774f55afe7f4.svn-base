@@ -1,0 +1,22 @@
+    <style>
+    .content-area{
+    	background:#2e4dc7;
+    }
+    
+   
+    </style>
+    <toaster-container toaster-options="{'time-out': 10000, 'close-button':true, 'animation-class': 'toast-top-center'}"></toaster-container>
+    <script type="text/ng-template" id="toasterData.html">
+          <p>{{toaster.data}}</p>
+    </script>
+    <div class="container"  style="padding-top:100px"  >
+        <div class="jumbotron container-fluid btn-group-sm" style="min-height:500px">
+          <uib-progressbar class="progress-striped active" max="8" value="screen+1" type="success"></uib-progressbar>
+<!--           <button ng-disabled="screen==0"  ng-click="changeItem(screen-1)"  href="javascript:void(0)" class="btn btn-primary btn-raised btn-fab left-button" abm-component><i class=" material-icons fa fa-chevron-left"></i></button>
+ -->	      <div ui-view class="col-lg-8 col-lg-push-2" ></div>
+<!-- 	      <button ng-disabled="screen==7" ng-click="changeItem(screen+1)" href="javascript:void(0)"  class="btn btn-primary btn-raised btn-fab right-button" abm-component><i class=" material-icons fa fa-chevron-right"></i></button>
+ -->	    </div>
+    </div>
+
+    
+     
